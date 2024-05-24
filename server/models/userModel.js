@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
         photoPath: {type: String, default: ""},
         location: {type: String},
         occupation: {type: String},
-        friends: {type: Array, default: []},
+        friends: {type: Array},
         viewedProfile: Number,
         impression: Number
     },
@@ -18,3 +18,4 @@ const userSchema = new mongoose.Schema(
 
 const userModel = mongoose.model("user", userSchema)
 export default userModel
+
