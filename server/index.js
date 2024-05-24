@@ -47,7 +47,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 // uploads an image to the local storage and then moves on to the next middleware for registration
 app.use("/auth/register", upload.single("picture"), register)
-app.usr("/post/createPost", upload.single("picture", createPost))
+app.use("/post/createPost", upload.single("picture", createPost))
 
 
 // database connection
