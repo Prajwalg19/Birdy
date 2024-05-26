@@ -26,9 +26,7 @@ const dirName = path.dirname(filename) // the dirname will convert the full path
 // /home/dev/socialMedia/server/
 const app = express();
 app.use(express.json())
-app.use(cors({
-    credentials: true
-}));
+app.use(cors());
 app.use(helmet()) // this library adds header to the response that is more secure than response without it
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
 app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
@@ -46,7 +44,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 // uploads an image to the local storage and then moves on to the next middleware for registration
-app.use("/auth/register", upload.single("picture"), register)
+app.use("/auth/register", upload.single("photoPath"), register)
 app.use("/post/createPost", upload.single("picture", createPost))
 
 
@@ -83,5 +81,5 @@ app.use("/posts", postsRoutes)
 app.use((err, req, res, next) => {
     const message = err?.message || "Internal server error"
     const statusCode = err?.statusCode || 500
-    res.status(statusCode).json({status: false, message})
+    res.status(statusCode).json(message)
 })
