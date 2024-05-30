@@ -1,4 +1,4 @@
-type registerSchema = {
+export type registerSchema = {
     firstName: string,
     lastName: string,
     email: string,
@@ -6,14 +6,50 @@ type registerSchema = {
     photoPath: File | null,
     location: string,
     occupation: string,
-    friends: string,
+    friends?: [],
 }
-export type {registerSchema};
-
-
 type loginSchema = {
     email: string,
     password: string
 }
 
-export type {loginSchema}
+export type {loginSchema} // can also export like this
+
+
+export type postSchema = {
+    description: string,
+    postImage: File | null,
+}
+
+export type postsStructure = {
+    userId: string
+    firstName: string
+    lastName: string
+    location: string
+    description: string
+    postPicture: string
+    userPic: string
+    likes: Map<string, boolean>;
+    comments: Array<string>;
+    createdAt: string;
+}
+
+
+
+export type userStructure = {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string,
+    photoPath: string
+    location: string,
+    friends: Array<friendStructer>;
+    viewedProfile?: number,
+    impression?: number,
+    occupation: string
+}
+
+
+export type friendStructer = {
+    _id: string, firstName: string, lastName: string, location: string, occupation: string, photoPath: string
+}

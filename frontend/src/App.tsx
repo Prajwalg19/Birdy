@@ -5,6 +5,7 @@ import LoginPage from "@/Pages/Login"
 import Header from "./Pages/Header";
 import {ReactNode} from "react";
 import Register from "./Pages/Register";
+import PrivateRoute from "@/components/PrivateRoute";
 
 function App(): ReactNode {
 
@@ -14,9 +15,11 @@ function App(): ReactNode {
                 <Header />
                 <Routes>
 
-                    <Route element={<HomePage />} path="/" />
+                    <Route path="/" element={<PrivateRoute />}>
+                        <Route element={<HomePage />} path="/" />
+                        <Route element={<Profile />} path="/profile/:userId" />
+                    </Route>
                     <Route element={<LoginPage />} path="/login" />
-                    <Route element={<Profile />} path="/profile/:userId" />
                     <Route element={<Register />} path="/register" />
 
                 </Routes>

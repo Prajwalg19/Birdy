@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import {registerSchema} from "./types";
+import {postSchema, registerSchema} from "./types";
 
 
 export const emailValidation = Yup.object().shape(
@@ -22,7 +22,15 @@ export const registerValidation = Yup.object().shape(
     }
 )
 
+export const postValidation = Yup.object().shape(
+    {
+        description: Yup.string().required("Required"),
+        postImage: Yup.string().required("Required")
+    }
 
+)
+
+// initial values of form of formik
 
 export const registerInitValues: registerSchema = {
     firstName: "",
@@ -32,6 +40,11 @@ export const registerInitValues: registerSchema = {
     photoPath: null,
     location: "",
     occupation: "",
-    friends: "",
+}
+
+
+export const postInitValues: postSchema = {
+    description: "",
+    postImage: null,
 }
 

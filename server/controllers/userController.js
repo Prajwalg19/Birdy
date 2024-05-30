@@ -69,7 +69,6 @@ export const addDeleteFriend = async (req, res, next) => {
         let {id, fid} = req.params
         const user = await userModel.findById(id)
         if (user.friends.includes(fid)) {
-            console.log("om")
             await userModel.updateOne({_id: id}, {$pull: {friends: fid}})
             await userModel.updateOne({_id: fid}, {$pull: {friends: id}})
         } else {
@@ -87,19 +86,19 @@ export const addDeleteFriend = async (req, res, next) => {
 }
 
 
-export const allUsers = async (req, res, next) => {
-    try {
-        let users = await userModel.find({});
-        let ok = users.map((item) => {
-            delete item._doc.password
-            return item
-        })
-
-        res.status(200).send(ok)
-
-    } catch (e) {
-        next(e)
-    }
-
-
-}
+//export const allUsers = async (req, res, next) => {
+//    try {
+//        let users = await userModel.find({});
+//        let ok = users.map((item) => {
+//            delete item._doc.password
+//            return item
+//        })
+//
+//        res.status(200).send(ok)
+//
+//    } catch (e) {
+//        next(e)
+//    }
+//
+//
+//}

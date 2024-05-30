@@ -26,7 +26,13 @@ const dirName = path.dirname(filename) // the dirname will convert the full path
 // /home/dev/socialMedia/server/
 const app = express();
 app.use(express.json())
-app.use(cors());
+const corsOptions = {
+    origin: "http://localhost:5173",
+    credentials: true,// for accepting the cookie sent by client
+
+}
+app.use(cors(corsOptions));
+
 app.use(helmet()) // this library adds header to the response that is more secure than response without it
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
 app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
@@ -45,7 +51,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 // uploads an image to the local storage and then moves on to the next middleware for registration
 app.use("/auth/register", upload.single("photoPath"), register)
-app.use("/post/createPost", upload.single("picture", createPost))
+app.use("/post/createPost", upload.single("postImage"), createPost)
 
 
 // database connection
@@ -67,7 +73,7 @@ app.listen(port, () => {
 
 
 // routes and their respective middleware functions
-app.use("/assests/", verifyToken, express.static(path.join(dirName, "public/assets")))
+app.use("/assets/", verifyToken, express.static(path.join(dirName, "public/assets"))) // requesting the file from my computer storage ni the form of axios.get('localhost:4000/assets/someimageName.png')
 
 app.use("/auth/", authRoutes)
 app.use("/user/", userRoutes)

@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom"
 import toast from "react-hot-toast"
-import axios from "axios"
+import axios from "@/utils/axios"
 import {SiThunderbird} from "react-icons/si";
 import {useNavigate} from "react-router-dom"
 import {useState} from "react"
@@ -10,6 +10,7 @@ import Dropzone from "react-dropzone"
 import {FaPencil} from "react-icons/fa6";
 import InputField from "@/components/InputFields";
 import {registerSchema} from "@/utils/types";
+import {AxiosError} from "axios";
 export default function Register() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -49,12 +50,15 @@ export default function Register() {
         try {
             setLoading(true);
             const formData = new FormData();
+            const data = Object.values(values);
+            let i: number = 0;
             if (values.photoPath) {
                 for (const elements in values) {
-                    formData.append(elements, values[elements as keyof registerSchema])
+                    formData.append(elements, data[i] as string | Blob)
+                    i++;
                 }
             }
-            const response: Response = await axios.post("http://localhost:4000/auth/register/", formData)
+            const response: Response = await axios.post("/auth/register/", formData)
             if (response.status == 201) {
                 toast.success("Account created successfully")
                 navigate("/login");
@@ -63,8 +67,7 @@ export default function Register() {
             }
         } catch (e) {
             setLoading(false)
-            if (!e) return toast.error("Something went wrong");
-            else if (e.response.status == 403) {
+            if (e instanceof AxiosError && e.response != undefined && e.response.status == 403) {
                 toast.error("Account already exists");
             }
             else
@@ -107,8 +110,10 @@ export default function Register() {
 
                                             <div  {...getRootProps()} className={`flex justify-center items-center hover:bg-slate-100 transition ease-out active:bg-slate-200 cursor-pointer relative w-full h-16 border border-dashed border-black/60 text-xs font-mono ${values.photoPath && "border-blue-600"}`}>
                                                 <input className="w-full h-10"  {...getInputProps()} />
-                                                {!values.photoPath ? <p >Select or drop your file</p> : <div className="flex justify-between w-full items-center px-5"><p>{values.photoPath.name}</p><FaPencil className="" /></div>
+                                                {!values.photoPath ? <p >Select or drop your image here</p> : <div className="flex justify-between w-full items-center px-5"><p>{values.photoPath.name}</p><FaPencil /></div>
                                                 }
+                                                {touched && errors ? (<div className="text-red-500 text-xs">{errors.photoPath}</div>) : null}
+
                                             </div>
                                         )
                                     }

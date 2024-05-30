@@ -18,7 +18,7 @@ reactRoot.render(
         <Provider store={store}>
 
             <React.StrictMode>
-                <Toaster position="top-right" />
+                <Toaster position="bottom-center" />
                 <App />
             </React.StrictMode>
 

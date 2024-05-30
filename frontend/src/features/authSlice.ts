@@ -1,21 +1,12 @@
+import {postsStructure, userStructure} from "@/utils/types";
 import {createSlice} from "@reduxjs/toolkit";
 
 
 interface initState {
     theme: "dark" | "light";
     token: null | string;
-    user: null | {
-        _id: string;
-        firstName?: string;
-        lastName?: string;
-        email?: string,
-        photoPath?: string
-        location?: string,
-        friends?: Array<string>;
-        viewedProfile?: number;
-        impression?: number;
-    };
-    posts: [] | null
+    user: null | userStructure;
+    posts: postsStructure[] | null
 
 
 
@@ -43,8 +34,14 @@ const demoSlice = createSlice(
                 state.token = null;
             },
             setFriends: (state, action) => {
-                //state.user?.friends = action.payload.
+                if (state.user)
+                    state.user.friends = action.payload;
+            },
+            setPosts: (state, action) => {
+                state.posts = action.payload
+
             }
+
 
 
         }
@@ -52,5 +49,5 @@ const demoSlice = createSlice(
     }
 
 )
-export const {changeTheme, loginSuccess, logOut} = demoSlice.actions;
+export const {changeTheme, loginSuccess, logOut, setFriends, setPosts} = demoSlice.actions;
 export default demoSlice.reducer;

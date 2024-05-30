@@ -1,4 +1,3 @@
-
 type propType = {
     handleBlur: any;
     handleChange: any;

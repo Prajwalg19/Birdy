@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js"
 
 export const createPost = async (req, res, next) => {
     try {
-        const {userId, description, postPicture} = req.body
+        const {userId, description} = req.body
         const user = await userModel.findById(userId);
         const newPost = new postsModel({
             userId,
@@ -12,7 +12,7 @@ export const createPost = async (req, res, next) => {
             location: user.location,
             description,
             userPic: user.photoPath,
-            postPicture,
+            postPicture: req.file.originalname,
             likes: {},
             comments: []
 
@@ -43,7 +43,7 @@ export const getFeedPosts = async (req, res, next) => {
 export const getUserPosts = async (req, res, next) => {
     try {
         const {userId} = req.params
-        const userPosts = await postsModel.findMany({userId})
+        const userPosts = await postsModel.find({userId})
         res.status(200).json(userPosts)
     } catch (e) {
         next(e)

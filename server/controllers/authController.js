@@ -3,13 +3,13 @@ import bcrypt from "bcrypt"
 import customError from "../utils/customError.js"
 import jwt from "jsonwebtoken"
 export const register = async (req, res, next) => {
+    console.log(req.file)
     try {
         const {
             firstName,
             lastName,
             email,
             password,
-            photoPath,
             location,
             occupation,
             friends,
@@ -20,7 +20,7 @@ export const register = async (req, res, next) => {
             lastName,
             email,
             password: passwordHash,
-            photoPath,
+            photoPath: req.file.originalname,
             location,
             occupation,
             friends,

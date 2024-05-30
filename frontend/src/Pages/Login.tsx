@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom"
 import toast from "react-hot-toast"
-import axios from "axios"
+import axios from "@/utils/axios"
 import {SiThunderbird} from "react-icons/si";
 import {useDispatch} from "react-redux"
 import {loginSuccess} from "@/features/authSlice"
@@ -10,6 +10,7 @@ import {emailValidation} from "@/utils/validationSchema";
 import {loginSchema} from "@/utils/types";
 import InputField from "@/components/InputFields";
 import {Formik} from "formik";
+import {AxiosError} from "axios";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -27,25 +28,25 @@ export default function Login() {
     //})
 
     function getError(e: unknown) {
-        if (!e) return toast.error("Unkown error")
-        if (e.response.status == 404) {
-            toast.error("User not found")
-        }
-        else if (e.response.status == 500) {
-            toast.error("Something went wrong")
-        } else if (e.response.status == 403) {
-            toast.error("Wrong password")
+        if (e instanceof AxiosError && e.response != undefined) {
+            if (e.response.status == 404) {
+                toast.error("User not found")
+            }
+            else if (e.response.status == 500) {
+                toast.error("Something went wrong")
+            } else if (e.response.status == 403) {
+                toast.error("Wrong password")
+
+            }
         } else {
             toast.error("Something went wrong")
         }
-
-
     }
 
     async function handleRequest(values: loginSchema) {
         try {
             setLoading(true);
-            const response = await axios.post("http://localhost:4000/auth/login/", values)
+            const response = await axios.post("/auth/login/", values)
             if (response.status == 200) {
                 toast.success("Login successful")
             }
@@ -64,8 +65,8 @@ export default function Login() {
     return (
         <div className="border border-black/10 py-14 md:mt-24 mt-10 px-6 rounded-2xl shadow-lg max-w-3xl mx-4 sm:mx-auto justify-center items-center">
             <div className="flex flex-col gap-7">
-                <p className="justify-center font-semibold text-2xl flex items-center gap-3 italic"><SiThunderbird /><p>Birdy </p></p>
-                <p className="text-center italic">Start connecting with people right now with birdy!</p>
+                <div className="justify-center font-semibold text-2xl flex items-center gap-3 italic"><SiThunderbird /><p>Birdy </p></div>
+                <p className="text-center italic font-serif">Start connecting with people right now with birdy!</p>
                 <Formik validationSchema={emailValidation} initialValues={{email: "", password: ""}} onSubmit={handleRequest}>
                     {({handleBlur, handleChange, handleSubmit, values, errors, touched, resetForm}) => (
                         <form className="flex flex-col gap-6 justify-center" onSubmit={handleSubmit} >
