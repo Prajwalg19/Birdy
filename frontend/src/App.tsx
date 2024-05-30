@@ -10,7 +10,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 function App(): ReactNode {
 
     return (
-        <div>
+        <div >
             <BrowserRouter>
                 <Header />
                 <Routes>

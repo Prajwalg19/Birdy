@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import customError from "../utils/customError.js"
 import jwt from "jsonwebtoken"
 export const register = async (req, res, next) => {
-    console.log(req.file)
     try {
         const {
             firstName,
@@ -13,6 +12,7 @@ export const register = async (req, res, next) => {
             location,
             occupation,
             friends,
+            photoPath
         } = req.body
         const passwordHash = bcrypt.hashSync(password, 10);
         const newUser = new userModel({
@@ -20,7 +20,7 @@ export const register = async (req, res, next) => {
             lastName,
             email,
             password: passwordHash,
-            photoPath: req.file.originalname,
+            photoPath: photoPath,
             location,
             occupation,
             friends,

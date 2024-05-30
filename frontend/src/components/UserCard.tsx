@@ -12,6 +12,7 @@ import {userStructure} from "@/utils/types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/store";
 import {UserCardSkeleton} from "@/Pages/Skeletons";
+import {Link} from "react-router-dom";
 
 export default function UserCard({userId}: {userId: string | null}) {
     const [userInfo, setUserInfo] = useState<userStructure | null>(null);
@@ -22,7 +23,7 @@ export default function UserCard({userId}: {userId: string | null}) {
         async function fetchUser() {
             try {
                 if (userId) {
-                    const response = await axios.get(`http://localhost:4000/user/${userId}`)
+                    const response = await axios.get(`user/${userId}`)
                     setUserInfo(response.data.user);
                 }
                 setLoading(false);
@@ -43,10 +44,10 @@ export default function UserCard({userId}: {userId: string | null}) {
             <section className="flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
                 <div className="flex justify-between items-center w-full">
                     <section className="flex items-center gap-4">
-                        <img src={`http://localhost/assets/${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" />
+                        <img src={`${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" />
                         <span className="flex flex-col justify-center">
                             <span className="text-lg capitalize font-semibold">{userInfo.firstName + " " + userInfo.lastName}</span>
-                            <span className="text-sm text-gray-500">{userInfo.friends?.length} Friends</span>
+                            <Link to="#friends" className="text-sm text-gray-500">{userInfo.friends?.length} Friends</Link>
                         </span>
 
                     </section>

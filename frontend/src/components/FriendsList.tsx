@@ -36,30 +36,34 @@ export default function FriendsList() {
 
     }
     return (
-        <main className="bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5">
-            <h1 className="font-semibold text-center">Your friends</h1>
-            <div className="flex flex-col gap-6">
-                {user?.friends.map((friend, index) => (
-                    <section key={index} className="flex justify-between items-center">
-                        <span className="flex flex-row gap-4 items-center">
-                            <img src={`http://localhost:4000/assets/${friend.photoPath}`} alt="user profile pic" className="h-12 w-12 rounded-full" />
-                            <span className="text-sm flex flex-col justify-center ">
-                                <span className="font-semibold">{friend.firstName + " " + friend?.lastName}</span>
-                                <span className="text-gray-600/80"> {user?.occupation}</span>
+        user?.friends.length != 0 && (
+            <main className="bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5" id="friends">
+                <h1 className="font-semibold text-center">Your friends</h1>
+                <div className="flex flex-col gap-6">
+                    {user?.friends.map((friend, index) => (
+                        <section key={index} className="flex justify-between items-center">
+                            <span className="flex flex-row gap-4 items-center">
+                                <img src={`${friend.photoPath}`} alt="user profile pic" className="h-12 w-12 rounded-full" />
+                                <span className="text-sm flex flex-col justify-center ">
+                                    <span className="font-semibold">{friend.firstName + " " + friend?.lastName}</span>
+                                    <span className="text-gray-600/80"> {user?.occupation}</span>
+                                </span>
                             </span>
-                        </span>
-                        <span>
-                            <button onClick={() => handleFriend(friend._id)}> {friendsId.includes(friend._id) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
+                            <span>
+                                <button onClick={() => handleFriend(friend._id)}> {friendsId.includes(friend._id) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
 
 
-                        </span>
-                    </section>
-                )
-                )
-                }
+                            </span>
+                        </section>
+                    )
+                    )
+                    }
 
-            </div>
-        </main>
+                </div>
+            </main>
+
+        )
+
 
     )
 }

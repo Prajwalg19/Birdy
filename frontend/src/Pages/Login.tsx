@@ -63,18 +63,18 @@ export default function Login() {
 
 
     return (
-        <div className="border border-black/10 py-14 md:mt-24 mt-10 px-6 rounded-2xl shadow-lg max-w-3xl mx-4 sm:mx-auto justify-center items-center">
+        <div className="py-14 md:mt-24 mt-10 px-6 rounded-2xl  max-w-3xl  sm:mx-auto justify-center items-center">
             <div className="flex flex-col gap-7">
-                <div className="justify-center font-semibold text-2xl flex items-center gap-3 italic"><SiThunderbird /><p>Birdy </p></div>
-                <p className="text-center italic font-serif">Start connecting with people right now with birdy!</p>
+                <p className="justify-center font-semibold text-2xl flex items-center gap-3"><SiThunderbird /><span>Birdy </span></p>
+                <p className="text-center italic font-serif my-4">Start connecting with people right now with birdy!</p>
                 <Formik validationSchema={emailValidation} initialValues={{email: "", password: ""}} onSubmit={handleRequest}>
                     {({handleBlur, handleChange, handleSubmit, values, errors, touched, resetForm}) => (
-                        <form className="flex flex-col gap-6 justify-center" onSubmit={handleSubmit} >
+                        <form className="flex flex-col gap-10 justify-center" onSubmit={handleSubmit} >
                             <InputField props={{handleBlur, handleChange, value: values.email, errors: errors.email, touched: touched.email, placeholder: "Email", name: "email", type: "email"}} />
                             <InputField props={{handleBlur, handleChange, value: values.password, errors: errors.password, touched: touched.password, placeholder: "Password", name: "password", type: "password"}} />
-                            <button disabled={loading} type="submit" className="justify-center flex items-center disabled:opacity-75 w-full py-1 font-semibold bg-blue-500 text-white rounded-sm">{loading ? <div className="h-5 w-5 animate-spin border-t-2 border-white rounded-full box-border"></div> : "Register"}</button>
+                            <button disabled={loading} type="submit" className="p-4 justify-center flex items-center disabled:opacity-75 w-full py-1 font-semibold bg-blue-500 text-white rounded-sm">{loading ? <div className="h-5 w-5 p-3 animate-spin border-t-2 font-semibold border-white rounded-full box-border"></div> : "Login"}</button>
 
-                            <Link className="text-sm text-green-500" onClick={() => resetForm()} to={"/register"}>Don&apos;t have an account? Let&apos;s create an account then</Link>
+                            <Link className="text-sm font-medium" onClick={() => resetForm()} to={"/register"}>Don&apos;t have an account? <span className="text-purple-800">Register here</span></Link>
 
                         </form>
                     )}

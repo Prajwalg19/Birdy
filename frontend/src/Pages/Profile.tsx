@@ -79,7 +79,7 @@ export default function Profile() {
                             <div key={index} className="bg-white p-7 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
                                 <section className="flex items-center justify-between">
                                     <span className="flex items-center gap-4">
-                                        <span><img src={`http://localhost:4000/assets/${post?.userPic}`} className="w-12 h-12 rounded-full" />
+                                        <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
                                         </span>
                                         <span className="flex flex-col justify-center">
                                             <p><span className="font-semibold">{post?.firstName + " " + post?.lastName}</span> <span className="p-1">&middot;</span> <span className="font-medium text-sm">{post.createdAt}</span></p>
@@ -92,7 +92,7 @@ export default function Profile() {
                                 </section>
                                 <div className="flex flex-col flex-nowrap gap-6">
                                     <span>{post.description}</span>
-                                    <img src={`http://localhost:4000/assets/${post.postPicture}`} className="w-[100%] h-[450px] object-cover rounded-xl border border-black/20" />
+                                    <img src={`${post.postPicture}`} className="w-[100%] h-[450px] object-cover rounded-xl border border-black/20" />
                                 </div>
                             </div>
 

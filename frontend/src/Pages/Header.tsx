@@ -23,18 +23,18 @@ export default function Header() {
     }
     let userName = ""
     if (user && user.firstName && user.lastName) {
-        userName = user.firstName + user.lastName
+        userName = user.firstName + " " + user.lastName
 
     }
     return (
         token ? (
 
-            <header className="dark:bg-black/80 bg-white shadow-lg w-full sticky p-2">
+            <header className="z-50  bg-white shadow-lg w-full sticky p-2">
                 <main className="max-w-[105rem] mx-auto flex justify-between items-center">
-                    <div className="text-white font-bold text-3xl flex items-center gap-6">
+                    <div className=" text-black font-bold text-3xl flex items-center gap-6">
                         <button className="p-2 block md:hidden text-white" onClick={() => handleModal()}>
 
-                            <FiMenu className="text-xl" />
+                            <FiMenu className="text-xl text-black" />
                         </button>
 
                         <button onClick={() => navigate("/")} className="flex items-center gap-4"><SiThunderbird className="text-xl" /><p>Birdy </p></button>
@@ -59,14 +59,14 @@ export default function Header() {
                                 <IoMdHelpCircle className="text-xl" />
                             </span>
                         </div>
-                        <select className="px-2 py-1 dark:bg-black/20 dark:text-white bg-white">
+                        <select className="px-2 py-1   bg-white">
                             <option value="">{userName}</option>
                             <option onClick={() => dispatch(logOut())}>Logout</option>
                         </select>
                     </div>
 
                     <section className="md:hidden block text-base relative">
-                        <input type="text" className="w-9 px-2 py-1 rounded-full bg-slate-200" />
+                        <input type="text" className="w-9 px-2 py-1 rounded-full" />
                         <IoSearch className="absolute bottom-[6px] right-2 text-lg text-black" />
                     </section>
                 </main>
@@ -100,12 +100,15 @@ export default function Header() {
 
 
             </header>
-        ) :
-            <div className="bg-black/90 text-white flex justify-center py-2 px-5 w-full items-center  text-xl">
-                <div className="font-bold italic flex text-3xl items-center gap-6"><SiThunderbird className="text-3xl" /><p>Birdy </p></div>
-            </div>
+        ) : null
 
     )
 
 
 }
+{
+    //<div className="bg-white text-black flex justify-center py-5 px-5 w-full items-center  text-xl">
+    //<div className="font-bold italic flex text-3xl items-center gap-6"><SiThunderbird className="text-3xl" /><p>Birdy </p></div>
+    //</div>
+}
+

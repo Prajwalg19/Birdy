@@ -22,13 +22,13 @@ export const registerValidation = Yup.object().shape(
     }
 )
 
-export const postValidation = Yup.object().shape(
-    {
-        description: Yup.string().required("Required"),
-        postImage: Yup.string().required("Required")
-    }
-
-)
+//export const postValidation = Yup.object().shape(
+//    {
+//        description: Yup.string().required("Required"),
+//        //postImage: Yup.string()
+//    }
+//
+//)
 
 // initial values of form of formik
 

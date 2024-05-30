@@ -10,7 +10,7 @@ export default function Home() {
     const {user} = useSelector((store: RootState) => store.user)
     return (
         user && (
-            <main className="flex lg:mx-auto my-5 lg:max-w-[100rem] px-10 lg:flex-row flex-col gap-10 w-full">
+            <main className="flex lg:mx-auto my-5 lg:max-w-[100rem] px-5 lg:flex-row flex-col gap-10 w-full">
                 <section className="w-full lg:w-[28%]">
                     <UserCard userId={user._id} />
 

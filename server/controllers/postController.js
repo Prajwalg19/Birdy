@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js"
 
 export const createPost = async (req, res, next) => {
     try {
-        const {userId, description} = req.body
+        const {userId, postPhoto, description} = req.body
         const user = await userModel.findById(userId);
         const newPost = new postsModel({
             userId,
@@ -12,7 +12,7 @@ export const createPost = async (req, res, next) => {
             location: user.location,
             description,
             userPic: user.photoPath,
-            postPicture: req.file.originalname,
+            postPicture: postPhoto,//postPicture: req.file.originalname, if i was using multer
             likes: {},
             comments: []
 
