@@ -57,7 +57,7 @@ const demoSlice = createSlice(
             setComment: (state, action) => {
                 const updatedPost: postsStructure = action.payload;
                 if (state.posts)
-                    state.posts = state.posts?.map((post: postsStructure): postsStructure => {
+                    state.posts = state.posts.map((post: postsStructure): postsStructure => {
                         if (post._id == updatedPost._id) {
                             updatedPost.createdAt = calculateTime(new Date(updatedPost.createdAt).getTime())
                             return updatedPost
@@ -67,15 +67,33 @@ const demoSlice = createSlice(
                     }
                     )
 
+            },
+            setTempLike: (state, action) => {
+                const {postId, userId} = action.payload;
+                if (state.posts)
+                    state.posts = state.posts.map((post: postsStructure): postsStructure => {
+                        if (post._id == postId) {
+                            if (post.likes[userId]) {
+                                post.likes[userId] = true;
+                                return post
+                            } else {
+                                delete post.likes[userId];
+                                return post;
+                            }
+                        } else {
+                            return post
+                        }
+                    })
+
             }
 
-
-
-
         }
+
+
+
 
     }
 
 )
-export const {changeTheme, loginSuccess, logOut, setFriends, setPosts, setPost, setComment} = demoSlice.actions;
+export const {changeTheme, loginSuccess, logOut, setFriends, setPosts, setPost, setComment, setTempLike} = demoSlice.actions;
 export default demoSlice.reducer;

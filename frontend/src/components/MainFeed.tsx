@@ -7,7 +7,7 @@ import {RootState} from "@/store"
 import {IoMdPersonAdd} from "react-icons/io";
 import {Link} from "react-router-dom"
 import {IoPersonRemove} from "react-icons/io5";
-import {setFriends, setPosts, setPost} from "@/features/authSlice"
+import {setFriends, setPosts, setPost, setTempLike} from "@/features/authSlice"
 import {postsStructure} from "@/utils/types"
 import {calculateTime} from "@/utils/utilityFunctions"
 import {BiMessageRounded} from "react-icons/bi"
@@ -23,7 +23,6 @@ export default function MainFeed() {
     const [clickedPost, setClickedPost] = useState<null | postsStructure>(null);
     const [friendLoading, setFriendLoading] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [tempLike, setTempLike] = useState({id: "", isLiked: false});
     const user = useSelector((store: RootState) => store.user.user)
     const posts = useSelector((store: RootState) => store.user.posts)
     let friendsId: string[];
@@ -73,7 +72,9 @@ export default function MainFeed() {
 
     }
     async function handleLike(postId: string) {
-        setTempLike({id: postId, isLiked: !tempLike.isLiked});
+        if (user)
+            dispatch(setTempLike({postId, userId: user._id}));
+
         try {
             if (user) {
                 const response = await axios.post(`/posts/${postId}/like`,
@@ -83,11 +84,11 @@ export default function MainFeed() {
                 dispatch(setPost(response.data))
 
             }
-            setTempLike({id: postId, isLiked: !tempLike.isLiked})
 
         } catch (e) {
             toast.error("Something went wrong")
-            setTempLike({id: postId, isLiked: !tempLike.isLiked})
+            if (user)
+                dispatch(setTempLike({postId, userId: user._id}));
         }
 
     }
@@ -126,7 +127,7 @@ export default function MainFeed() {
                                 <section className="flex flex-row items-center justify-around  px-2">
                                     <BiMessageRounded className="text-xl cursor-pointer" onClick={() => {setShowModal(!showModal); setClickedPost(post)}} />
                                     <div className="cursor-pointer transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
-                                        {(user?._id && post.likes[user._id] != undefined) || (tempLike.id == post._id && tempLike.isLiked) ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
+                                        {user?._id && post.likes[user._id] ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
                                         }
                                         <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
 
