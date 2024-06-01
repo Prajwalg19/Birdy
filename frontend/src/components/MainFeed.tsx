@@ -86,7 +86,7 @@ export default function MainFeed() {
             }
 
         } catch (e) {
-            toast.error("Something went wrong")
+            toast.error(e)
             if (user)
                 dispatch(setTempLike({postId, userId: user._id}));
         }
