@@ -23,6 +23,7 @@ export default function MainFeed() {
     const [clickedPost, setClickedPost] = useState<null | postsStructure>(null);
     const [friendLoading, setFriendLoading] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [tempLike, setTempLike] = useState(false);
     const user = useSelector((store: RootState) => store.user.user)
     const posts = useSelector((store: RootState) => store.user.posts)
     let friendsId: string[];
@@ -72,6 +73,7 @@ export default function MainFeed() {
 
     }
     async function handleLike(postId: string) {
+        setTempLike(!tempLike);
         try {
             if (user) {
                 const response = await axios.post(`/posts/${postId}/like`,
@@ -81,9 +83,11 @@ export default function MainFeed() {
                 dispatch(setPost(response.data))
 
             }
+            setTempLike(!tempLike)
 
         } catch (e) {
             toast.error("Something went wrong")
+            setTempLike(!tempLike)
         }
 
     }
@@ -122,7 +126,7 @@ export default function MainFeed() {
                                 <section className="flex flex-row items-center justify-around  px-2">
                                     <BiMessageRounded className="text-xl cursor-pointer" onClick={() => {setShowModal(!showModal); setClickedPost(post)}} />
                                     <div className="cursor-pointer transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
-                                        {user?._id && post.likes[user._id] != undefined ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
+                                        {(user?._id && post.likes[user._id] != undefined) || tempLike ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
                                         }
                                         <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
 
