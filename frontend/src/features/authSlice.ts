@@ -70,15 +70,18 @@ const demoSlice = createSlice(
             },
             setTempLike: (state, action) => {
                 const {postId, userId} = action.payload;
+
                 if (state.posts)
                     state.posts = state.posts.map((post: postsStructure): postsStructure => {
                         if (post._id == postId) {
                             if (post.likes[userId]) {
-                                post.likes[userId] = true;
-                                return post
-                            } else {
                                 delete post.likes[userId];
                                 return post;
+
+                            } else {
+                                const temp = post;
+                                temp.likes[userId] = true;
+                                return temp
                             }
                         } else {
                             return post
