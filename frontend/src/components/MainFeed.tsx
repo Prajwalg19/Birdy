@@ -86,7 +86,8 @@ export default function MainFeed() {
             }
 
         } catch (e) {
-            toast.error(e)
+            if (e instanceof AxiosError)
+                toast.error(e.message)
             if (user)
                 dispatch(setTempLike({postId, userId: user._id}));
         }
