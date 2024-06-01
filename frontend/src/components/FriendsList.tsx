@@ -1,19 +1,28 @@
 import {useDispatch, useSelector} from "react-redux"
 import {RootState} from "@/store"
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
 import axios from "@/utils/axios"
 import {setFriends} from "@/features/authSlice"
 import {IoMdPersonAdd} from "react-icons/io"
 import {IoPersonRemove} from "react-icons/io5"
 import toast from "react-hot-toast"
+import Spinner from "./Spinner"
 
 export default function FriendsList() {
     const {user} = useSelector((store: RootState) => store.user)
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         async function fetchFriends() {
-            const response = await axios.get(`/user/${user?._id}/friends`)
-            dispatch(setFriends(response.data));
+            try {
+                setLoading(true);
+                const response = await axios.get(`/user/${user?._id}/friends`)
+                dispatch(setFriends(response.data));
+                setLoading(false);
+            } catch (e) {
+                setLoading(false);
+                toast.error("Something went wrong");
+            }
 
         }
         fetchFriends()
@@ -35,6 +44,9 @@ export default function FriendsList() {
         }
 
     }
+    if (loading) {
+        return <Spinner />
+    }
     return (
         user?.friends.length != 0 && (
             <main className="bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5" id="friends">
@@ -46,7 +58,7 @@ export default function FriendsList() {
                                 <img src={`${friend.photoPath}`} alt="user profile pic" className="h-12 w-12 rounded-full" />
                                 <span className="text-sm flex flex-col justify-center ">
                                     <span className="font-semibold">{friend.firstName + " " + friend?.lastName}</span>
-                                    <span className="text-gray-600/80"> {user?.occupation}</span>
+                                    <span className="text-gray-600/80"> {friend?.occupation}</span>
                                 </span>
                             </span>
                             <span>

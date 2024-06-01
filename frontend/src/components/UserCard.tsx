@@ -41,13 +41,12 @@ export default function UserCard({userId}: {userId: string | null}) {
 
     return (
         userInfo && (
-            <section className="flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
+            <div className="flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
                 <div className="flex justify-between items-center w-full">
                     <section className="flex items-center gap-4">
-                        <img src={`${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" />
+                        <Link to={`/profile/${userInfo._id}`}> <img src={`${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" /> </Link>
                         <span className="flex flex-col justify-center">
-                            <span className="text-lg capitalize font-semibold">{userInfo.firstName + " " + userInfo.lastName}</span>
-                            <Link to="#friends" className="text-sm text-gray-500">{userInfo.friends?.length} Friends</Link>
+                            <span className="text-lg capitalize font-semibold"><Link to={`/profile/${userInfo._id}`}>{userInfo.firstName + " " + userInfo.lastName}</Link></span>
                         </span>
 
                     </section>
@@ -63,16 +62,16 @@ export default function UserCard({userId}: {userId: string | null}) {
                 <Divider />
 
                 <div className="text-gray-500">
-                    <span className="flex text-sm justify-between items-center"><p>Your account is viewed by </p><span>{userInfo.viewedProfile}</span></span>
-                    <span className="flex text-sm justify-between items-center"><p>Impressions on your posts  </p><span>{userInfo.impression}</span> </span>
+                    <span className="flex text-sm justify-between items-center"><span>Your account is viewed by </span><span>{userInfo.viewedProfile}</span></span>
+                    <span className="flex text-sm justify-between items-center"><span>Impressions on your posts  </span><span>{userInfo.impression}</span> </span>
                 </div>
                 <Divider />
 
                 <div className="flex flex-col gap-6">
-                    <h1 className="text-lg text-center text-gray-700 ">Social Profiles</h1>
-                    <section className="flex justify-between items-center">
+                    <span className="text-lg text-center text-gray-700 ">Social Profiles</span>
+                    <div className="flex justify-between items-center">
                         <div className="flex gap-6 items-center">
-                            <p><FaXTwitter className="text-xl" /></p>
+                            <span><FaXTwitter className="text-xl" /></span>
                             <span className="flex-col justify-center ">
                                 <div className="font-medium">X</div>
                                 <div className="text-gray-500 text-sm">@{userInfo.firstName as string + Math.floor(Math.random() * 100)}</div>
@@ -80,10 +79,10 @@ export default function UserCard({userId}: {userId: string | null}) {
                             </span>
                         </div>
                         <div><FaPencilAlt className="text-base text-gray-500" /></div>
-                    </section>
-                    <section className="flex justify-between items-center">
+                    </div>
+                    <div className="flex justify-between items-center">
                         <div className="flex gap-6 items-center">
-                            <p> <FaLinkedin className="text-xl" /> </p>
+                            <span> <FaLinkedin className="text-xl" /> </span>
                             <span className="flex-col justify-center">
                                 <div className="font-medium">LinkdIn</div>
                                 <div className="text-gray-500 text-sm">@{userInfo.lastName as string + Math.floor(Math.random() * 100)}</div>
@@ -91,9 +90,9 @@ export default function UserCard({userId}: {userId: string | null}) {
                             </span>
                         </div>
                         <div><FaPencilAlt className="text-base text-gray-500" /></div>
-                    </section>
+                    </div>
                 </div>
-            </section >
+            </div >
 
         )
     )

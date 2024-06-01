@@ -1,3 +1,4 @@
+import postModel from '../models/postsModel.js';
 import postsModel from '../models/postsModel.js'
 import userModel from "../models/userModel.js"
 
@@ -56,11 +57,11 @@ export const updateLikePosts = async (req, res, next) => {
     try {
         const {id} = req.params
         const {userId} = req.body
-        const post = await postsModel.findById({_id: id})
-        if (post.like.get(userId)) {
-            post.like.delete(userId);
+        const post = await postsModel.findById(id)
+        if (post.likes.get(userId)) {
+            post.likes.delete(userId);
         } else {
-            post.like.set(userId, true);
+            post.likes.set(userId, true);
         }
         const newDoc = await post.save();
         res.status(200).json(newDoc)
@@ -69,3 +70,19 @@ export const updateLikePosts = async (req, res, next) => {
         next(e);
     }
 }
+
+
+export const updateComments = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const {userId, commentDescription, userPic, firstName, lastName, location} = req.body
+        //const post = await postsModel.findById(id)
+        const newDoc = await postsModel.updateOne({_id: id}, {$push: {comments: [{userId, commentDescription, userPic, firstName, lastName, location}]}})
+        const doc = await postModel.findById(id);
+        res.status(200).json(doc)
+
+    } catch (e) {
+        next(e);
+    }
+}
+

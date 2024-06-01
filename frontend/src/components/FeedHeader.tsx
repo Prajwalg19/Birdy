@@ -3,8 +3,8 @@ import {FaImage} from "react-icons/fa6";
 import {IoVideocamSharp} from "react-icons/io5";
 import {FaPaperclip} from "react-icons/fa";
 import {Formik, FormikState} from "formik";
-import {postInitValues, postValidation} from "@/utils/validationSchema";
-import {postSchema} from "@/utils/types";
+import {postInitValues} from "@/utils/validationSchema";
+import {postSchema, postsStructure} from "@/utils/types";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store";
@@ -15,10 +15,12 @@ import toast from "react-hot-toast";
 import {setPosts} from "@/features/authSlice";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import {app} from "../../firebase"
+import {Link} from "react-router-dom";
+import {calculateTime} from "@/utils/utilityFunctions";
 export default function FeedHeader() {
     const storage = getStorage(app)
     const user = useSelector((store: RootState) => store.user)
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState<false | true>(false);
     const [showSelector, setShowSelector] = useState<true | false>(false);
     async function handleSubmit(data: postSchema, options: {resetForm: (nextState?: Partial<FormikState<postSchema>> | undefined) => void}) {
@@ -41,11 +43,17 @@ export default function FeedHeader() {
 
             const response = await axios.post("/post/createPost", {userId: user.user?._id, description: data.description, postPhoto: imageRef})
             if (response.status == 201) {
-                dispath(setPosts(response.data))
+                const newResponse = response.data.map((item: postsStructure) => {
+                    const time = new Date(item.createdAt).getTime()
+                    item.createdAt = calculateTime(time)
+                    return item;
+
+                })
+                dispatch(setPosts(newResponse))
                 options.resetForm();
                 toast.success("Birdy posted");
-                setLoading(false);
             }
+            setLoading(false);
 
         } catch (e: unknown) {
             if (e instanceof AxiosError && e.response) {
@@ -84,7 +92,7 @@ export default function FeedHeader() {
             {({setFieldValue, handleSubmit, handleChange, values, resetForm}) => (
                 <form onSubmit={handleSubmit} className="border bg-white border-black/10 shadow-lg rounded-lg p-6">
                     <section className="flex items-center gap-4 mb-8">
-                        <img src={`${user.user?.photoPath}`} alt="profile pic" className="w-10 h-10 rounded-full" />
+                        <Link to={`profile/${user.user?._id}`}><img src={`${user.user?.photoPath}`} alt="profile pic" className="w-10 h-10 rounded-full" /> </Link>
                         <input type="text" name="description" value={values.description} placeholder="What&apos;s happening ?" onChange={handleChange} className="py-4 px-6 border border-black/60 rounded-full w-full" />
                     </section>
                     {
@@ -124,7 +132,7 @@ export default function FeedHeader() {
                         </span>
 
                         <span><FaMicrophone className="text-xl" /></span>
-                        <button type="submit" onClick={() => resetForm} className="bg-purple-700 rounded-full px-5 py-2 text-white disabled:bg-purple-400 hover:bg-purple-800 active:bg-purple-900" disabled={(values.description.length == 0 && values.postImage == null && loading == true) ? true : false}>{loading ? <div className="h-5 w-7 animate-spin border-t-2 border-white rounded-full box-border"></div> : "Post"}</button>
+                        <button type="submit" onClick={() => resetForm} className="bg-purple-700 rounded-full px-5 py-2 text-white disabled:bg-purple-400 hover:bg-purple-800 active:bg-purple-900" disabled={((values.description.length == 0 && values.postImage == null) || loading) ? true : false}>{loading ? <div className="h-5 w-5 animate-spin border-t-2 border-white rounded-full box-border"></div> : "Post"}</button>
                     </section>
                 </form>
 

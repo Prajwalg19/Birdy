@@ -6,7 +6,6 @@ import Header from "./Pages/Header";
 import {ReactNode} from "react";
 import Register from "./Pages/Register";
 import PrivateRoute from "@/components/PrivateRoute";
-
 function App(): ReactNode {
 
     return (

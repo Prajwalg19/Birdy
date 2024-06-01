@@ -1,4 +1,5 @@
 import {postsStructure, userStructure} from "@/utils/types";
+import {calculateTime} from "@/utils/utilityFunctions";
 import {createSlice} from "@reduxjs/toolkit";
 
 
@@ -40,7 +41,34 @@ const demoSlice = createSlice(
             setPosts: (state, action) => {
                 state.posts = action.payload
 
+            },
+            setPost: (state, action) => {
+                const updatedPost: postsStructure = action.payload;
+                if (state.posts)
+                    state.posts = state.posts.map((post: postsStructure): postsStructure => {
+                        if (post._id == updatedPost._id) {
+                            updatedPost.createdAt = calculateTime(new Date(updatedPost.createdAt).getTime())
+                            return updatedPost;
+                        } else {
+                            return post
+                        }
+                    })
+            },
+            setComment: (state, action) => {
+                const updatedPost: postsStructure = action.payload;
+                if (state.posts)
+                    state.posts = state.posts?.map((post: postsStructure): postsStructure => {
+                        if (post._id == updatedPost._id) {
+                            updatedPost.createdAt = calculateTime(new Date(updatedPost.createdAt).getTime())
+                            return updatedPost
+
+                        } else return post
+
+                    }
+                    )
+
             }
+
 
 
 
@@ -49,5 +77,5 @@ const demoSlice = createSlice(
     }
 
 )
-export const {changeTheme, loginSuccess, logOut, setFriends, setPosts} = demoSlice.actions;
+export const {changeTheme, loginSuccess, logOut, setFriends, setPosts, setPost, setComment} = demoSlice.actions;
 export default demoSlice.reducer;

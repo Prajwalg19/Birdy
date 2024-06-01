@@ -39,14 +39,14 @@ export default function Header() {
 
                         <button onClick={() => navigate("/")} className="flex items-center gap-4"><SiThunderbird className="text-xl" /><p>Birdy </p></button>
                         <section className="hidden md:block text-base relative ">
-                            <input type="text" placeholder="Search" className="rounded-full px-2 py-1" />
+                            <input type="text" placeholder="Search" className="rounded-full px-2 py-1 border border-gray-400" />
                             <IoSearch className="absolute bottom-[6px] right-2 text-lg text-black" />
                         </section>
 
                     </div>
 
                     <div className="hidden md:flex items-center gap-10">
-                        <div className="flex items-center text-white gap-10 transition">
+                        <div className="flex items-center gap-10 transition">
                             <button onClick={() => dispatch(changeTheme())}>{theme == "light" ? <FaMoon className="text-sm" /> : <FaSun className="text-sm" />}
                             </button>
                             <span>

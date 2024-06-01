@@ -22,6 +22,7 @@ export type postSchema = {
 }
 
 export type postsStructure = {
+    _id: string,
     userId: string
     firstName: string
     lastName: string
@@ -29,8 +30,8 @@ export type postsStructure = {
     description: string
     postPicture: string
     userPic: string
-    likes: Map<string, boolean>;
-    comments: Array<string>;
+    likes: {[key: string]: boolean},
+    comments: Array<Array<{userId: string, commentDescription: string, location: string, firstName: string, lastName: string, userPic: string}>>;
     createdAt: string;
 }
 
