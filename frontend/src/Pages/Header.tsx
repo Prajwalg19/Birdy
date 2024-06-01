@@ -26,6 +26,11 @@ export default function Header() {
         userName = user.firstName + " " + user.lastName
 
     }
+    function handleDropDown(e: React.ChangeEvent<HTMLSelectElement>) {
+        if (e.target.value == "userProfile") navigate(`/profile/${user?._id}`)
+        else if (e.target.value == "feed") navigate(`/`)
+        else if (e.target.value == "logOut") dispatch(logOut());
+    }
     return (
         token ? (
 
@@ -59,10 +64,12 @@ export default function Header() {
                                 <IoMdHelpCircle className="text-xl" />
                             </span>
                         </div>
-                        <select className="px-2 py-1   bg-white">
-                            <option value="">{userName}</option>
-                            <option onClick={() => dispatch(logOut())}>Logout</option>
+                        <select className="bg-white px-4 py-1 rounded-lg" onChange={(e) => {handleDropDown(e)}}>
+                            <option value="feed">Feed</option>
+                            <option value="userProfile">{userName}</option>
+                            <option value="logOut">Logout</option>
                         </select>
+
                     </div>
 
                     <section className="md:hidden block text-base relative">
@@ -91,9 +98,10 @@ export default function Header() {
                         </span>
 
                     </div>
-                    <select className="px-4 py-1 rounded-lg">
-                        <option value="">{userName}</option>
-                        <option onClick={() => dispatch(logOut())}>Logout</option>
+                    <select className="px-4 py-1 rounded-lg bg-neutral-50" onChange={(e) => {handleDropDown(e)}}>
+                        <option value="feed">Feed</option>
+                        <option value="userProfile">{userName}</option>
+                        <option value="logOut">Logout</option>
                     </select>
 
                 </section>

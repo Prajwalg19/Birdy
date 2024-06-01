@@ -25,6 +25,7 @@ dotenv.config();
 // /home/dev/socialMedia/server/
 const app = express();
 app.use(express.json())
+app.use(cookieParser())
 const corsOptions = {
     origin: ["https://birdy-theta.vercel.app", "http://localhost:5173"],
     credentials: true,// for accepting the cookie sent by client
@@ -37,7 +38,6 @@ app.use(cors(corsOptions));
 //app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
 //app.use(bodyParser.json({limit: "30mb", extended: true}));
 //app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
-app.use(cookieParser())
 
 //const storage = multer.diskStorage({
 //    destination: function (req, file, cb) {

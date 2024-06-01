@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import UserCard from "@/components/UserCard"
 import {useEffect, useState} from "react"
 import axios from "@/utils/axios"
@@ -10,18 +10,22 @@ import {RootState} from "@/store"
 import {IoPersonRemove} from "react-icons/io5"
 import {IoMdPersonAdd} from "react-icons/io"
 import {useDispatch} from "react-redux"
-import {setFriends, setPost, setPosts} from "@/features/authSlice"
+import {setFriends, setPost, setPosts, setTempLike} from "@/features/authSlice"
 import {calculateTime} from "@/utils/utilityFunctions"
 import {BiMessageRounded} from "react-icons/bi";
 import {CiHeart} from "react-icons/ci";
 import {FaHeart} from "react-icons/fa";
 import Spinner from "@/components/Spinner"
+import Comment from "@/components/CommentModal"
 
 export default function Profile() {
     const {user, posts} = useSelector((store: RootState) => store.user)
     const dispatch = useDispatch();
     const param = useParams()
+    const [showModal, setShowModal] = useState<true | false>(false);
+    const [clickedPost, setClickedPost] = useState<null | postsStructure>(null);
     const [loading, setLoading] = useState(true);
+    const [friendLoading, setFriendLoading] = useState(false);
 
     let friendsId: string[];
     if (user?.friends)
@@ -60,20 +64,26 @@ export default function Profile() {
     }, [param.userId, user, dispatch])
 
     async function handleFriend(friendsId: string) {
+        setFriendLoading(true);
         try {
             if (user) {
                 const response = await axios.post(`user/${user._id}/${friendsId}`)
                 dispatch(setFriends(response.data))
             }
+            setFriendLoading(false);
 
         }
         catch (e) {
             toast.error("Something went wrong");
+            setFriendLoading(false);
         }
 
     }
 
     async function handleLike(postId: string) {
+        if (user)
+            dispatch(setTempLike({postId, userId: user._id}));
+
         try {
             if (user) {
                 const response = await axios.post(`/posts/${postId}/like`,
@@ -85,10 +95,17 @@ export default function Profile() {
             }
 
         } catch (e) {
-            toast.error("Something went wrong")
+            if (e instanceof AxiosError)
+                toast.error(e.message)
+            if (user)
+                dispatch(setTempLike({postId, userId: user._id}));
         }
 
     }
+    if (loading) {
+        return <Spinner />
+    }
+
 
     return (
         param.userId && (
@@ -102,7 +119,7 @@ export default function Profile() {
                         {
 
                             posts.map((post, index) => (
-                                <div key={index} className="bg-white p-7 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
+                                <div key={index} className="bg-white px-7 pt-3 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
                                     <section className="flex items-center justify-between">
                                         <span className="flex items-center gap-4">
                                             <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
@@ -113,7 +130,7 @@ export default function Profile() {
                                             </span>
 
                                         </span>
-                                        {post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
+                                        {friendLoading ? (<Spinner />) : post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
                                         }
                                     </section>
                                     <div className="flex flex-col flex-nowrap gap-6">
@@ -122,19 +139,45 @@ export default function Profile() {
                                         )}
                                     </div>
                                     <section className="flex flex-row items-center justify-around  px-2">
-                                        <BiMessageRounded className="text-xl" />
-                                        <div className="transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
-                                            {user?._id && post.likes[user._id] != undefined ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl" />
+                                        <BiMessageRounded className="text-xl cursor-pointer" onClick={() => {setShowModal(!showModal); setClickedPost(post)}} />
+                                        <div className="cursor-pointer transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
+                                            {user?._id && post.likes[user._id] ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
                                             }
                                             <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
 
                                         </div>
+                                    </section>
+                                    <section className="flex flex-col items-center gap-3 w-full px-2">
+                                        {post.comments.length != 0 && post.comments.map((comment, index) => (
+                                            <span className="w-full" key={index}>
+                                                <div className="relative flex py-3 items-center w-full">
+                                                    <div className="flex-grow border-t border-gray-400/80"></div>
+                                                    <div className="flex-grow border-t border-gray-400/80"></div>
+                                                </div>
+                                                <span className="flex flex-col gap-3">
+                                                    <span className="flex gap-5 items-center">
+                                                        <Link to={`/profile/${comment[0].userId}`}>                                                    <img className="h-8 w-8 rounded-full" src={`${comment[0].userPic}`}></img>
+                                                        </Link>
+                                                        <span className="flex flex-col justify-center">
+                                                            <div className="capitalize "><Link to={`/profile/${comment[0].userId}`}>{comment[0].firstName + " " + comment[0].lastName}</Link></div>
+                                                            <div className="text-xs text-gray-500">{comment[0].location}</div>
+                                                        </span>
+
+                                                    </span>
+
+                                                    <div className="">{comment[0].commentDescription}</div>
+
+                                                </span>
+                                            </span>
+                                        ))}
+
                                     </section>
 
                                 </div>
 
                             ))
                         }
+                        {showModal && <Comment changeModalState={setShowModal} modalState={showModal} postInfo={clickedPost} />}
                     </div>
 
 
