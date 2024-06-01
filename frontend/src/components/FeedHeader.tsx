@@ -41,7 +41,7 @@ export default function FeedHeader() {
             if (data.postImage)
                 imageRef = await handleImageUpload(data.postImage)
 
-            const response = await axios.post("/post/createPost", {userId: user.user?._id, description: data.description, postPhoto: imageRef})
+            const response = await axios.post("/posts/createPost", {userId: user.user?._id, description: data.description, postPhoto: imageRef})
             if (response.status == 201) {
                 const newResponse = response.data.map((item: postsStructure) => {
                     const time = new Date(item.createdAt).getTime()

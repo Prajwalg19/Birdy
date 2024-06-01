@@ -10,7 +10,7 @@ import multer from "multer"
 import {fileURLToPath} from "url"
 import path from "path"
 import morgan from "morgan"
-//import helmet from "helmet"
+import helmet from "helmet"
 import {register} from "./controllers/authController.js"
 import cookieParser from "cookie-parser"
 import {createPost} from "./controllers/postController.js"
@@ -33,11 +33,11 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
-//app.use(helmet()) // this library adds header to the response that is more secure than response without it
-//app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+app.use(helmet()) // this library adds header to the response that is more secure than response without it
+app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
 //app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
-//app.use(bodyParser.json({limit: "30mb", extended: true}));
-//app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+app.use(bodyParser.json({limit: "30mb", extended: true}));
+app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 
 //const storage = multer.diskStorage({
 //    destination: function (req, file, cb) {
@@ -51,8 +51,6 @@ app.use(cors(corsOptions));
 // uploads an image to the local storage and then moves on to the next middleware for registration
 //app.use("/auth/register", upload.single("photoPath"), register)
 //app.use("/post/createPost", upload.single("postImage"), createPost)
-app.use("/auth/register", register)
-app.use("/post/createPost", createPost)
 
 
 // database connection
