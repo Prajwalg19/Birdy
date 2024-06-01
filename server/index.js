@@ -26,7 +26,7 @@ const dirName = path.dirname(filename) // the dirname will convert the full path
 const app = express();
 app.use(express.json())
 const corsOptions = {
-    origin: "https://birdy-theta.vercel.app",
+    origin: ["https://birdy-theta.vercel.app", "http://localhost:5173"],
     credentials: true,// for accepting the cookie sent by client
 
 }

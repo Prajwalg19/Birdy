@@ -73,7 +73,7 @@ export default function MainFeed() {
 
     }
     async function handleLike(postId: string) {
-        setTempLike({id: postId, isLiked: !tempLike});
+        setTempLike({id: postId, isLiked: !tempLike.isLiked});
         try {
             if (user) {
                 const response = await axios.post(`/posts/${postId}/like`,
@@ -83,11 +83,11 @@ export default function MainFeed() {
                 dispatch(setPost(response.data))
 
             }
-            setTempLike({id: postId, isLiked: !tempLike})
+            setTempLike({id: postId, isLiked: !tempLike.isLiked})
 
         } catch (e) {
             toast.error("Something went wrong")
-            setTempLike({id: postId, isLiked: !tempLike})
+            setTempLike({id: postId, isLiked: !tempLike.isLiked})
         }
 
     }
