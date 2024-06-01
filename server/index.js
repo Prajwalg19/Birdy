@@ -19,9 +19,9 @@ dotenv.config();
 
 //configurations
 
-const filename = fileURLToPath(import.meta.url) // import.meta.url will return the path to the current module which is  file:///home/dev/socialMedia/server/index.js
+//const filename = fileURLToPath(import.meta.url) // import.meta.url will return the path to the current module which is  file:///home/dev/socialMedia/server/index.js
 // fileURLToPath will convert that to /home/dev/socialMedia/server/index.js
-const dirName = path.dirname(filename) // the dirname will convert the full path of file to only the directory that it resides in like this
+//const dirName = path.dirname(filename) // the dirname will convert the full path of file to only the directory that it resides in like this
 // /home/dev/socialMedia/server/
 const app = express();
 app.use(express.json())
@@ -34,9 +34,9 @@ app.use(cors(corsOptions));
 
 //app.use(helmet()) // this library adds header to the response that is more secure than response without it
 //app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
-app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
-app.use(bodyParser.json({limit: "30mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+//app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
+//app.use(bodyParser.json({limit: "30mb", extended: true}));
+//app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cookieParser())
 
 //const storage = multer.diskStorage({
