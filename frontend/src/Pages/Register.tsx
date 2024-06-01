@@ -126,7 +126,7 @@ export default function Register() {
                 <Formik className="flex flex-col justify-center" onSubmit={handleSubmit} initialValues={registerInitValues} validationSchema={registerValidation}>
                     {
                         ({values, errors, handleBlur, handleSubmit, handleChange, resetForm, touched, setFieldValue}) => (
-                            <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-10">
+                            <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-5">
                                 <div className="flex sm:flex-nowrap gap-10 flex-wrap items-center w-full">
                                     <InputField props={{handleBlur, handleChange, value: values.firstName, errors: errors.firstName, touched: touched.firstName, placeholder: "First Name", name: "firstName", type: "text"}} />
                                     <InputField props={{handleBlur, handleChange, value: values.lastName, errors: errors.lastName, touched: touched.lastName, placeholder: "Last Name", name: "lastName", type: "text"}} />
@@ -155,7 +155,8 @@ export default function Register() {
                                         )
                                     }
                                 </Dropzone>
-                                {touched && errors ? (<div className="text-red-500 text-xs">{errors.photoPath}</div>) : null}
+                                <div className="h-5">{touched && errors ? (<div className="text-red-500 text-xs">{errors.photoPath}</div>) : null}
+                                </div>
 
                                 <button disabled={loading} type="submit" className="justify-center flex items-center disabled:opacity-75 w-full py-1 font-semibold bg-blue-500 text-white rounded-sm">{loading ? <div className="h-5 w-5 animate-spin border-t-2 border-white rounded-full box-border"></div> : "Register"}</button>
                                 <Link className="text-sm font-medium" onClick={() => resetForm()} to={"/login"}>Already have an account? <span className="text-blue-500">Let&apos;s log in then</span></Link>

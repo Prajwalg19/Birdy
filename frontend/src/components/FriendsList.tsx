@@ -49,7 +49,7 @@ export default function FriendsList() {
     }
     return (
         user?.friends.length != 0 && (
-            <main className="bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5" id="friends">
+            <main className=" lg:sticky top-3 bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5" id="friends">
                 <h1 className="font-semibold text-center">Your friends</h1>
                 <div className="flex flex-col gap-6">
                     {user?.friends.map((friend, index) => (

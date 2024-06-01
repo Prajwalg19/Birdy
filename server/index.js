@@ -10,10 +10,9 @@ import multer from "multer"
 import {fileURLToPath} from "url"
 import path from "path"
 import morgan from "morgan"
-import helmet from "helmet"
+//import helmet from "helmet"
 import {register} from "./controllers/authController.js"
 import cookieParser from "cookie-parser"
-import verifyToken from "./utils/verify.js"
 import {createPost} from "./controllers/postController.js"
 dotenv.config();
 
@@ -33,22 +32,22 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
-app.use(helmet()) // this library adds header to the response that is more secure than response without it
-app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+//app.use(helmet()) // this library adds header to the response that is more secure than response without it
+//app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
 app.use(morgan("dev"))  // to log out all the functionings happening in the backend. Defaulted in django but gotta use a library to just log out this GET / 304 0.396 ms - - in nodejs
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cookieParser())
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/assets");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({storage});
+//const storage = multer.diskStorage({
+//    destination: function (req, file, cb) {
+//        cb(null, "public/assets");
+//    },
+//    filename: function (req, file, cb) {
+//        cb(null, file.originalname);
+//    },
+//});
+//const upload = multer({storage});
 // uploads an image to the local storage and then moves on to the next middleware for registration
 //app.use("/auth/register", upload.single("photoPath"), register)
 //app.use("/post/createPost", upload.single("postImage"), createPost)
@@ -75,7 +74,7 @@ app.listen(port, () => {
 
 
 // routes and their respective middleware functions
-app.use("/assets/", verifyToken, express.static(path.join(dirName, "public/assets"))) // requesting the file from my computer storage ni the form of axios.get('localhost:4000/assets/someimageName.png')
+//app.use("/assets/", verifyToken, express.static(path.join(dirName, "public/assets"))) // requesting the file from my computer storage ni the form of axios.get('localhost:4000/assets/someimageName.png')
 
 app.use("/auth/", authRoutes)
 app.use("/user/", userRoutes)

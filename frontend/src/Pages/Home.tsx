@@ -21,7 +21,7 @@ export default function Home() {
                     <MainFeed />
                 </section>
 
-                <section className=" w-full flex flex-col gap-10 lg:w-[28%]">
+                <section className="w-full flex flex-col gap-10 lg:w-[28%]">
                     <Advert />
                     <FriendsList />
 

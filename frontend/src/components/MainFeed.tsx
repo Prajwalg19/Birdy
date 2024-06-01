@@ -21,6 +21,7 @@ export default function MainFeed() {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState<true | false>(false);
     const [clickedPost, setClickedPost] = useState<null | postsStructure>(null);
+    const [friendLoading, setFriendLoading] = useState(false);
     const [loading, setLoading] = useState(true);
     const user = useSelector((store: RootState) => store.user.user)
     const posts = useSelector((store: RootState) => store.user.posts)
@@ -55,15 +56,18 @@ export default function MainFeed() {
         fetchPosts()
     }, [dispatch])
     async function handleFriend(friendsId: string) {
+        setFriendLoading(true);
         try {
             if (user) {
                 const response = await axios.post(`user/${user._id}/${friendsId}`)
                 dispatch(setFriends(response.data))
             }
+            setFriendLoading(false);
 
         }
         catch (e) {
             toast.error("Something went wrong");
+            setFriendLoading(false);
         }
 
     }
@@ -104,7 +108,7 @@ export default function MainFeed() {
                                     </span>
 
                                 </span>
-                                {post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
+                                {friendLoading ? (<Spinner />) : post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
                                 }
                             </section>
                             <div className="flex flex-col flex-nowrap gap-3">

@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom"
 import UserCard from "@/components/UserCard"
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
 import axios from "@/utils/axios"
 import {postsStructure} from "@/utils/types"
 import {AxiosError} from "axios"
@@ -15,17 +15,21 @@ import {calculateTime} from "@/utils/utilityFunctions"
 import {BiMessageRounded} from "react-icons/bi";
 import {CiHeart} from "react-icons/ci";
 import {FaHeart} from "react-icons/fa";
+import Spinner from "@/components/Spinner"
 
 export default function Profile() {
     const {user, posts} = useSelector((store: RootState) => store.user)
     const dispatch = useDispatch();
     const param = useParams()
+    const [loading, setLoading] = useState(true);
+
     let friendsId: string[];
     if (user?.friends)
         friendsId = Object.values(user?.friends).map((friend) => friend._id)
 
     useEffect(() => {
         async function fetchUserPosts() {
+            setLoading(true);
             try {
                 const response = await axios.get(`posts/${param.userId}/posts/`)
                 const newResponse = response.data.map((item: postsStructure) => {
@@ -36,6 +40,7 @@ export default function Profile() {
                 })
 
                 dispatch(setPosts(newResponse))
+                setLoading(false);
 
 
             } catch (e: unknown) {
@@ -47,6 +52,7 @@ export default function Profile() {
                 }
 
             }
+            setLoading(false);
 
         }
         fetchUserPosts()
@@ -83,54 +89,59 @@ export default function Profile() {
         }
 
     }
+
     return (
-        param.userId && posts != null && posts?.length != 0 ? (
+        param.userId && (
             <div className="lg:max-w-6xl lg:mx-auto flex w-full flex-col md:flex-row h-full gap-6 px-5 py-6">
-                <p className="md:w-[40%]">
+                <span className="md:w-[40%]">
                     <UserCard userId={param.userId} />
 
-                </p>
-                <div className="flex flex-col flex-nowrap gap-8 md:w-[60%]">
-                    {
+                </span>
+                {
+                    loading ? (<div className="md:w-[60%] mt-20 lg:mt-0 flex justify-center items-center"><Spinner /></div>) : posts && posts != null && posts?.length != 0 ? (<div className="flex flex-col flex-nowrap gap-8 md:w-[60%]">
+                        {
 
-                        posts.map((post, index) => (
-                            <div key={index} className="bg-white p-7 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
-                                <section className="flex items-center justify-between">
-                                    <span className="flex items-center gap-4">
-                                        <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
-                                        </span>
-                                        <span className="flex flex-col justify-center">
-                                            <p><span className="font-semibold">{post?.firstName + " " + post?.lastName}</span> <span className="p-1">&middot;</span> <span className="font-medium text-sm">{post.createdAt}</span></p>
-                                            <p className="text-sm text-gray-500">{post?.location}</p>
-                                        </span>
+                            posts.map((post, index) => (
+                                <div key={index} className="bg-white p-7 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
+                                    <section className="flex items-center justify-between">
+                                        <span className="flex items-center gap-4">
+                                            <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
+                                            </span>
+                                            <span className="flex flex-col justify-center">
+                                                <p><span className="font-semibold">{post?.firstName + " " + post?.lastName}</span> <span className="p-1">&middot;</span> <span className="font-medium text-sm">{post.createdAt}</span></p>
+                                                <p className="text-sm text-gray-500">{post?.location}</p>
+                                            </span>
 
-                                    </span>
-                                    {post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
-                                    }
-                                </section>
-                                <div className="flex flex-col flex-nowrap gap-6">
-                                    <span>{post.description}</span>
-                                    {post.postPicture && (<img src={`${post.postPicture}`} className="w-[100%] h-[450px] object-cover rounded-xl border border-black/20" />
-                                    )}
-                                </div>
-                                <section className="flex flex-row items-center justify-around  px-2">
-                                    <BiMessageRounded className="text-xl" />
-                                    <div className="transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
-                                        {user?._id && post.likes[user._id] != undefined ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl" />
+                                        </span>
+                                        {post.userId == user?._id ? null : <button onClick={() => handleFriend(post.userId)}> {user?.friends && friendsId.includes(post.userId) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
                                         }
-                                        <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
-
+                                    </section>
+                                    <div className="flex flex-col flex-nowrap gap-6">
+                                        <span>{post.description}</span>
+                                        {post.postPicture && (<img src={`${post.postPicture}`} className="w-[100%] h-[450px] object-cover rounded-xl border border-black/20" />
+                                        )}
                                     </div>
-                                </section>
+                                    <section className="flex flex-row items-center justify-around  px-2">
+                                        <BiMessageRounded className="text-xl" />
+                                        <div className="transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
+                                            {user?._id && post.likes[user._id] != undefined ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl" />
+                                            }
+                                            <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
 
-                            </div>
+                                        </div>
+                                    </section>
 
-                        ))
-                    }
-                </div>
+                                </div>
 
+                            ))
+                        }
+                    </div>
+
+
+                    ) : (<div className="flex items-center md:w-[60%] justify-center">You have no posts</div>)
+                }
             </div>
 
-        ) : null
+        )
     )
 }

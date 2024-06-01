@@ -41,7 +41,7 @@ export default function UserCard({userId}: {userId: string | null}) {
 
     return (
         userInfo && (
-            <div className="flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
+            <div className="lg:sticky top-3 flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
                 <div className="flex justify-between items-center w-full">
                     <section className="flex items-center gap-4">
                         <Link to={`/profile/${userInfo._id}`}> <img src={`${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" /> </Link>
