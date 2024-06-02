@@ -9,15 +9,18 @@ import {FaXTwitter} from "react-icons/fa6";
 import {FaLinkedin} from "react-icons/fa6";
 import {FaPencilAlt} from "react-icons/fa";
 import {userStructure} from "@/utils/types";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store";
 import {UserCardSkeleton} from "@/Pages/Skeletons";
 import {Link} from "react-router-dom";
+import {AxiosError} from "axios";
+import {logOut} from "@/features/authSlice";
 
 export default function UserCard({userId}: {userId: string | null}) {
     const [userInfo, setUserInfo] = useState<userStructure | null>(null);
     const [loading, setLoading] = useState(true);
     const {user} = useSelector((store: RootState) => store.user)
+    const dispatch = useDispatch();
     useEffect(() => {
 
         async function fetchUser() {
@@ -28,13 +31,25 @@ export default function UserCard({userId}: {userId: string | null}) {
                 }
                 setLoading(false);
             } catch (e) {
+                if (e instanceof AxiosError && e.response) {
+                    if (e.response.status == 404) {
+                        toast.error("Endpoint not found")
+                    }
+                    else if (e.status == 403 || e.status == 401) {
+                        toast.error("Session timedout")
+                        dispatch(logOut())
+                    }
+                }
+                else {
+                    toast.error("Something went wrong")
+                }
+
                 setLoading(false);
-                toast.error("Something went wrong")
             }
         }
 
         fetchUser()
-    }, [userId, user])
+    }, [userId, user, dispatch])
     if (loading) {
         return <UserCardSkeleton />
     }

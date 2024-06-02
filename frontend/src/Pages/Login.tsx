@@ -36,7 +36,6 @@ export default function Login() {
                 toast.error("Something went wrong")
             } else if (e.response.status == 403) {
                 toast.error("Wrong password")
-
             }
         } else {
             toast.error("Something went wrong")

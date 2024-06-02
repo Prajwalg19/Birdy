@@ -2,11 +2,12 @@ import {useDispatch, useSelector} from "react-redux"
 import {RootState} from "@/store"
 import {useEffect, useState} from "react"
 import axios from "@/utils/axios"
-import {setFriends} from "@/features/authSlice"
+import {logOut, setFriends} from "@/features/authSlice"
 import {IoMdPersonAdd} from "react-icons/io"
 import {IoPersonRemove} from "react-icons/io5"
 import toast from "react-hot-toast"
 import Spinner from "./Spinner"
+import {AxiosError} from "axios"
 
 export default function FriendsList() {
     const {user} = useSelector((store: RootState) => store.user)
@@ -20,8 +21,20 @@ export default function FriendsList() {
                 dispatch(setFriends(response.data));
                 setLoading(false);
             } catch (e) {
+                if (e instanceof AxiosError && e.response) {
+                    if (e.response.status == 404) {
+                        toast.error("Endpoint not found")
+                    }
+                    else if (e.status == 403 || e.status == 401) {
+                        dispatch(logOut())
+                    }
+
+
+                } else {
+
+                    toast.error("Something went wrong");
+                }
                 setLoading(false);
-                toast.error("Something went wrong");
             }
 
         }
@@ -40,7 +53,19 @@ export default function FriendsList() {
 
         }
         catch (e) {
-            toast.error("Something went wrong");
+            if (e instanceof AxiosError && e.response) {
+                if (e.response.status == 404) {
+                    toast.error("Endpoint not found")
+                }
+                else if (e.status == 403 || e.status == 401) {
+                    dispatch(logOut())
+                }
+
+
+            }
+            else {
+                toast.error("Something went wrong");
+            }
         }
 
     }

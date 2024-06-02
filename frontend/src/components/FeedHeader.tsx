@@ -12,7 +12,7 @@ import axios from "@/utils/axios"
 import Dropzone from "react-dropzone";
 import {AxiosError} from "axios";
 import toast from "react-hot-toast";
-import {setPosts} from "@/features/authSlice";
+import {logOut, setPosts} from "@/features/authSlice";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import {app} from "../../firebase"
 import {Link} from "react-router-dom";
@@ -60,6 +60,11 @@ export default function FeedHeader() {
                 if (e.response.status == 404) {
                     toast.error("Endpoint not found")
                 }
+                else if (e.status == 403 || e.status == 401) {
+                    dispatch(logOut())
+                }
+
+
             } else {
                 toast.error("Something went wrong")
             }

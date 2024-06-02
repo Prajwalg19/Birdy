@@ -10,7 +10,7 @@ import {RootState} from "@/store"
 import {IoPersonRemove} from "react-icons/io5"
 import {IoMdPersonAdd} from "react-icons/io"
 import {useDispatch} from "react-redux"
-import {setFriends, setPost, setPosts, setTempLike} from "@/features/authSlice"
+import {logOut, setFriends, setPost, setPosts, setTempLike} from "@/features/authSlice"
 import {calculateTime} from "@/utils/utilityFunctions"
 import {BiMessageRounded} from "react-icons/bi";
 import {CiHeart} from "react-icons/ci";
@@ -49,7 +49,10 @@ export default function Profile() {
 
             } catch (e: unknown) {
                 if (e instanceof AxiosError && e.response) {
-                    toast.success("ok");
+                    if (e.status == 403 || e.status == 401) {
+                        toast.error("Session timedout");
+                        dispatch(logOut())
+                    }
 
                 } else {
                     toast.error("Something went wrong")
@@ -74,7 +77,13 @@ export default function Profile() {
 
         }
         catch (e) {
-            toast.error("Something went wrong");
+            if (e instanceof AxiosError && e.response) {
+                if (e.status == 403 || e.status == 401) {
+                    toast.error("Session timedout");
+                    dispatch(logOut())
+                }
+
+            }
             setFriendLoading(false);
         }
 
@@ -95,8 +104,13 @@ export default function Profile() {
             }
 
         } catch (e) {
-            if (e instanceof AxiosError)
-                toast.error(e.message)
+            if (e instanceof AxiosError && e.response) {
+                if (e.status == 403 || e.status == 401) {
+                    toast.error("Session timedout");
+                    dispatch(logOut())
+                }
+
+            }
             if (user)
                 dispatch(setTempLike({postId, userId: user._id}));
         }
