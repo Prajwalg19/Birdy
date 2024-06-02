@@ -111,13 +111,13 @@ export default function Header() {
 
 
                     <div className="text-black dark:text-white grid grid-cols-2 grid-rows-2 gap-3 px-3 w-full">
-                        <button className="flex justify-center p-20 items-center border rounded-lg  border-gray-400/20 w-full" onClick={() => dispatch(changeTheme())}>{theme == "light" ? <FaMoon className="text-4xl" /> : <FaSun className="text-4xl" />}
+                        <button className="flex justify-center items-center border rounded-lg  border-gray-400/20 w-full" onClick={() => dispatch(changeTheme())}>{theme == "light" ? <FaMoon className="text-4xl" /> : <FaSun className="text-4xl" />}
                         </button>
-                        <span className="flex justify-center p-20 items-center rounded-lg border border-gray-400/20 w-full"><MdMessage className="text-4xl" /> </span>
-                        <span className="flex justify-center p-20 items-center rounded-lg border border-gray-400/20 w-full">
+                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full"><MdMessage className="text-4xl" /> </span>
+                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full">
                             <IoIosNotifications className="text-4xl" />
                         </span>
-                        <span className="flex justify-center p-20 items-center rounded-lg border border-gray-400/20 w-full">
+                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full">
                             <IoMdHelpCircle className="text-4xl" />
                         </span>
 
