@@ -1,12 +1,13 @@
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
-import {setComment} from "@/features/authSlice";
+import {logOut, setComment} from "@/features/authSlice";
 import {useState} from "react";
 import {RxCross2} from "react-icons/rx";
 import axios from "@/utils/axios";
 import {postsStructure} from "@/utils/types";
 import {RootState} from "@/store";
 import toast from "react-hot-toast";
+import {AxiosError} from "axios";
 
 export default function Comment({changeModalState, modalState, postInfo}: {changeModalState: React.Dispatch<React.SetStateAction<boolean>>, modalState: boolean, postInfo: postsStructure | null}) {
     const [commentData, setCommentData] = useState<string>("");
@@ -22,7 +23,18 @@ export default function Comment({changeModalState, modalState, postInfo}: {chang
                 changeModalState(!modalState);
             }
         } catch (e) {
-            toast.error("Something went wrong");
+            if (e instanceof AxiosError && e.response) {
+                if (e.response.status == 404) {
+                    toast.error("Endpoint not found")
+                }
+                else if (e.status == 403 || e.status == 401) {
+                    dispatch(logOut())
+                }
+
+
+            } else {
+                toast.error("Something went wrong")
+            }
         }
     }
 
