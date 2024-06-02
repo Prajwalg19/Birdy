@@ -18,7 +18,7 @@ reactRoot.render(
         <Provider store={store}>
 
             <React.StrictMode>
-                <Toaster position="top-right" />
+                <Toaster position="bottom-center"  toastOptions={{className: 'dark:bg-gray-900 dark:text-white text-black'}}/>
                 <App />
             </React.StrictMode>
 
