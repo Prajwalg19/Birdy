@@ -5,9 +5,6 @@ dotenv.config()
 
 export default async function verifyToken(req, res, next) {
     try {
-        if (!req.cookies?.my_cookie) {
-            return next(customError("No cookie!!", 401))
-        }
         const token = req.cookies.my_cookie // this only works because i am using the cookie-parser library which populates the cookies with an object of all the cookies and thier values
         if (!token) {
             return next("Unauthorized", 401)
