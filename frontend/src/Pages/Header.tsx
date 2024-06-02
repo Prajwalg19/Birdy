@@ -37,6 +37,7 @@ export default function Header() {
 
     }
     function handleDropDown(e: React.ChangeEvent<HTMLSelectElement>) {
+        setModal(!modal)
         if (e.target.value == "userProfile") navigate(`/profile/${user?._id}`)
         else if (e.target.value == "feed") navigate(`/`)
         else if (e.target.value == "logOut") dispatch(logOut());
@@ -111,16 +112,21 @@ export default function Header() {
 
 
                     <div className="text-black dark:text-white grid grid-cols-2 grid-rows-2 gap-3 px-3 w-full">
-                        <button className="flex justify-center items-center border rounded-lg  border-gray-400/20 w-full" onClick={() => dispatch(changeTheme())}>{theme == "light" ? <FaMoon className="text-4xl" /> : <FaSun className="text-4xl" />}
+                        <button
+                            className="flex justify-center items-center h-52 w-full border rounded-lg border-gray-400/20"
+                            onClick={() => dispatch(changeTheme())}
+                        >
+                            {theme === "light" ? <FaMoon className="w-10 h-10" /> : <FaSun className="w-10 h-10" />}
                         </button>
-                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full"><MdMessage className="text-4xl" /> </span>
-                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full">
-                            <IoIosNotifications className="text-4xl" />
+                        <span className="flex justify-center items-center h-52 w-full rounded-lg border border-gray-400/20">
+                            <MdMessage className="w-10 h-10" />
                         </span>
-                        <span className="flex justify-center items-center rounded-lg border border-gray-400/20 w-full">
-                            <IoMdHelpCircle className="text-4xl" />
+                        <span className="flex justify-center items-center h-52 w-full rounded-lg border border-gray-400/20">
+                            <IoIosNotifications className="w-10 h-10" />
                         </span>
-
+                        <span className="flex justify-center items-center h-52 w-full rounded-lg border border-gray-400/20">
+                            <IoMdHelpCircle className="w-10 h-10" />
+                        </span>
                     </div>
                     <select className="px-4 py-1 rounded-lg dark:bg-gray-950 dark:text-white text-black bg-neutral-50" onChange={(e) => {handleDropDown(e)}}>
                         <option value="feed">Feed</option>

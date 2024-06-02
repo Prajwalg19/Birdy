@@ -117,7 +117,7 @@ export default function Profile() {
 
     }
     if (loading) {
-        return <Spinner />
+        return <div className="flex justify-center items-center h-screen w-full"><Spinner /> </div>
     }
 
 
