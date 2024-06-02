@@ -6,18 +6,28 @@ import {IoSearch} from "react-icons/io5";
 import {IoIosNotifications} from "react-icons/io";
 import {useSelector} from "react-redux";
 import {RootState} from "@/store";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {changeTheme, logOut} from "@/features/authSlice";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FiMenu} from "react-icons/fi";
 import {AiOutlineClose} from "react-icons/ai";
 import {SiThunderbird} from "react-icons/si";
 export default function Header() {
     const {theme, user, token} = useSelector((store: RootState) => store.user)
     const navigate = useNavigate()
+    const [searchText, setSearchText] = useState("");
     const dispatch = useDispatch()
     const [modal, setModal] = useState(false)
+    const location = useLocation();
+    const queryString = location.search;
+
+    useEffect(() => {
+        const term = new URLSearchParams(queryString).get("searchTerm");
+        const searchTerm = term ?? "";
+        setSearchText(searchTerm);
+    }, [queryString]);
+
     function handleModal() {
         setModal(!modal)
     }
@@ -31,6 +41,12 @@ export default function Header() {
         else if (e.target.value == "feed") navigate(`/`)
         else if (e.target.value == "logOut") dispatch(logOut());
     }
+    function searchPage(query: string) {
+        console.log(query)
+        navigate(`/search?searchTerm=${query}`);
+    }
+
+
     return (
         token ? (
 
@@ -44,8 +60,12 @@ export default function Header() {
 
                         <button onClick={() => navigate("/")} className="flex items-center gap-4 dark:text-white text-black "><SiThunderbird className="text-xl" /><p>Birdy </p></button>
                         <section className="hidden md:block text-base relative ">
-                            <input type="text" placeholder="Search" className="text-black dark:bg-slate-800 dark:border-slate-600  dark:text-slate-100 border-black/60 rounded-full px-3 py-1 border border-gray-400" />
-                            <IoSearch className="absolute bottom-[6px] right-2 text-lg text-black dark:text-slate-200" />
+                            <form onSubmit={(e) => {e.preventDefault(); searchPage(searchText)}}>
+
+                                <input type="text" placeholder="Search" onChange={(e) => {setSearchText(e.target.value);}} value={searchText} className="text-black dark:bg-slate-800 dark:border-slate-600  dark:text-slate-100 border-black/60 rounded-full px-3 py-1 border border-gray-400" />
+                                <button type="submit" ><IoSearch className="absolute bottom-[6px] right-2 text-lg text-black dark:text-slate-200" /> </button>
+
+                            </form>
                         </section>
 
                     </div>
@@ -73,8 +93,12 @@ export default function Header() {
                     </div>
 
                     <section className="md:hidden block text-base relative ">
-                        <input type="text" className="w-9 px-2 py-1 rounded-full dark:bg-slate-800 bg-white dark:text-slate-200 border dark:border-gray-600 text-black" />
-                        <IoSearch className="absolute bottom-[6px] right-2 text-lg text-black dark:text-slate-300" />
+                        <form onSubmit={(e) => {e.preventDefault(); searchPage(searchText)}}>
+                            <input type="text" onChange={(e) => {setSearchText(e.target.value);}} value={searchText} className="w-40 px-2 py-1 rounded-full dark:bg-slate-800 bg-white dark:text-slate-200 border dark:border-gray-600 text-black" />
+                            <button type="submit"><IoSearch className="absolute bottom-[6px] right-2 text-lg text-black dark:text-slate-300" />
+                            </button>
+
+                        </form>
                     </section>
                 </main>
 

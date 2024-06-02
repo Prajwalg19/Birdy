@@ -12,22 +12,25 @@ import {AxiosError} from "axios";
 export default function Comment({changeModalState, modalState, postInfo}: {changeModalState: React.Dispatch<React.SetStateAction<boolean>>, modalState: boolean, postInfo: postsStructure | null}) {
     const [commentData, setCommentData] = useState<string>("");
     const {user} = useSelector((store: RootState) => store.user);
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
+        setLoading(true);
         try {
             if (user) {
                 const response = await axios.post(`/posts/${postInfo?._id}/comments`, {userId: user._id, commentDescription: commentData, location: user.location, firstName: user.firstName, lastName: user.lastName, userPic: user.photoPath});
                 dispatch(setComment(response.data));
                 changeModalState(!modalState);
             }
+            setLoading(true);
         } catch (e) {
             if (e instanceof AxiosError && e.response) {
                 if (e.response.status == 404) {
                     toast.error("Endpoint not found")
                 }
-                else if (e.status == 403 || e.status == 401) {
+                else if (e.response.status == 403 || e.response.status == 401) {
                     dispatch(logOut())
                 }
 
@@ -35,6 +38,7 @@ export default function Comment({changeModalState, modalState, postInfo}: {chang
             } else {
                 toast.error("Something went wrong")
             }
+            setLoading(true);
         }
     }
 
@@ -57,7 +61,7 @@ export default function Comment({changeModalState, modalState, postInfo}: {chang
                     <img src={user?.photoPath} className="dark:border-2 dark:border-slate-400 h-8 w-8 md:h-10 md:w-11 rounded-full" alt="yourpfp" />
                     <textarea className="rounded-3xl px-5 py-3 border dark:bg-slate-900 border-gray-500/80 w-full" placeholder="Comment" rows={4} onChange={(e) => {setCommentData(e.target.value)}} />
                 </span>
-                <button className="bg-purple-700 text-white p-2 rounded-md" onClick={(e) => handleSubmit(e)}>Post</button>
+                <button className="bg-purple-700 text-white flex justify-center items-center p-2 rounded-md disabled:bg-purple-500" disabled={loading} onClick={(e) => handleSubmit(e)}>{loading ? <div className="h-5 w-5 rounded-full animate-spin border-t-2 border-white "></div> : "Post"}</button>
             </main>
         </div>
     );

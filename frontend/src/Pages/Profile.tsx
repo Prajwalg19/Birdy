@@ -49,7 +49,7 @@ export default function Profile() {
 
             } catch (e: unknown) {
                 if (e instanceof AxiosError && e.response) {
-                    if (e.status == 403 || e.status == 401) {
+                    if (e.response.status == 403 || e.response.status == 401) {
                         toast.error("Session timedout");
                         dispatch(logOut())
                     }
@@ -78,7 +78,7 @@ export default function Profile() {
         }
         catch (e) {
             if (e instanceof AxiosError && e.response) {
-                if (e.status == 403 || e.status == 401) {
+                if (e.response.status == 403 || e.response.status == 401) {
                     toast.error("Session timedout");
                     dispatch(logOut())
                 }
@@ -105,7 +105,7 @@ export default function Profile() {
 
         } catch (e) {
             if (e instanceof AxiosError && e.response) {
-                if (e.status == 403 || e.status == 401) {
+                if (e.response.status == 403 || e.response.status == 401) {
                     toast.error("Session timedout");
                     dispatch(logOut())
                 }
@@ -124,7 +124,7 @@ export default function Profile() {
     return (
         param.userId && (
             <div className="lg:max-w-6xl lg:mx-auto flex w-full flex-col md:flex-row h-full gap-6 px-5 py-6">
-                <span className="md:w-[40%]">
+                <span className="md:w-[40%] h-full lg:sticky top-16">
                     <UserCard userId={param.userId} />
 
                 </span>
@@ -133,7 +133,7 @@ export default function Profile() {
                         {
 
                             posts.map((post, index) => (
-                                <div key={index} className="border dark:border-gray-600 dark:bg-gray-900 dark:text-slate-200 text-black bg-white px-7 pt-3 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
+                                <div key={index} className=" border dark:border-gray-600 dark:bg-gray-900 dark:text-slate-200 text-black bg-white px-7 py-3 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
                                     <section className="flex items-center justify-between">
                                         <span className="flex items-center gap-4">
                                             <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
@@ -195,7 +195,7 @@ export default function Profile() {
                     </div>
 
 
-                    ) : (<div className="flex items-center md:w-[60%] justify-center">You have no posts</div>)
+                    ) : (<div className="flex items-center md:w-[60%] justify-center text-black dark:text-white">User has no posts</div>)
                 }
             </div>
 

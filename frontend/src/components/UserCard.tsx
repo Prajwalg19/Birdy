@@ -35,7 +35,7 @@ export default function UserCard({userId}: {userId: string | null}) {
                     if (e.response.status == 404) {
                         toast.error("Endpoint not found")
                     }
-                    else if (e.status == 403 || e.status == 401) {
+                    else if (e.response.status == 403 || e.response.status == 401) {
                         toast.error("Session timedout")
                         dispatch(logOut())
                     }

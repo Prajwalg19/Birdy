@@ -86,3 +86,26 @@ export const updateComments = async (req, res, next) => {
     }
 }
 
+
+
+export const searchPosts = async (req, res, next) => {
+    try {
+        const id = req.query?.searchTerm || ""
+
+        const query = await postsModel.find({
+            $or:
+                [
+                    {description: {$regex: id, $options: "i"}},
+                    {firstName: {$regex: id, $options: "i"}},
+                    {lastName: {$regex: id, $options: "i"}},
+                ]
+        }
+        )
+        res.json(query)
+
+    } catch (e) {
+        next(e);
+
+    }
+
+}

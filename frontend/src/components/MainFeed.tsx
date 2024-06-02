@@ -15,6 +15,7 @@ import {FaHeart} from "react-icons/fa6"
 import {CiHeart} from "react-icons/ci"
 import Comment from "./CommentModal"
 import Spinner from "./Spinner"
+import Footer from "./Footer"
 
 export default function MainFeed() {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function MainFeed() {
 
             } catch (e) {
                 if (e instanceof AxiosError && e.response != undefined) {
-                    if (e.status == 401 || e.status == 403)
+                    if (e.response.status == 401 || e.response.status == 403)
                         dispatch(logOut())
                 } else {
                     toast.error("Something went wrong")
@@ -66,7 +67,12 @@ export default function MainFeed() {
 
         }
         catch (e) {
-            toast.error("Something went wrong");
+            if (e instanceof AxiosError && e.response != undefined) {
+                if (e.response.status == 401 || e.response.status == 403)
+                    dispatch(logOut())
+            } else {
+                toast.error("Something went wrong")
+            }
             setFriendLoading(false);
         }
 
@@ -86,8 +92,12 @@ export default function MainFeed() {
             }
 
         } catch (e) {
-            if (e instanceof AxiosError)
-                toast.error(e.message)
+            if (e instanceof AxiosError && e.response != undefined) {
+                if (e.response.status == 401 || e.response.status == 403)
+                    dispatch(logOut())
+            } else {
+                toast.error("Something went wrong")
+            }
             if (user)
                 dispatch(setTempLike({postId, userId: user._id}));
         }
@@ -165,6 +175,7 @@ export default function MainFeed() {
                     ))
                 }
                 {showModal && <Comment changeModalState={setShowModal} modalState={showModal} postInfo={clickedPost} />}
+                <Footer />
             </div>
 
 

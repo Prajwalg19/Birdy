@@ -7,7 +7,7 @@ import {ReactNode} from "react";
 import Register from "./Pages/Register";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import PrivateRoute from "@/components/PrivateRoute";
-import Footer from "./components/Footer";
+import SearchPage from "./Pages/SearchPage";
 function App(): ReactNode {
 
     return (
@@ -23,11 +23,11 @@ function App(): ReactNode {
                         </Route>
                         <Route element={<LoginPage />} path="/login" />
                         <Route element={<Register />} path="/register" />
+                        <Route element={<SearchPage />} path="/search"></Route>
 
                     </Routes>
 
                 </BrowserRouter>
-                <Footer />
             </ThemeSwitcher>
 
         </div>
