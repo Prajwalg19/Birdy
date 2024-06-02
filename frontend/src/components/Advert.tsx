@@ -30,7 +30,6 @@ const advert = [
 ] as const
 export default function Advert() {
     const [count] = useState(Math.floor(Math.random() * 10) % 4)
-    console.log(count)
     return (
         <main className="border dark:border-gray-600 dark:bg-gray-900 text-black dark:text-slate-200 bg-white rounded-xl w-full h-auto p-5 ">
             <span className="flex flex-row items-center justify-between p-2">

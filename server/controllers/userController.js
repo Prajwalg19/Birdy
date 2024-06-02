@@ -51,6 +51,7 @@ export const getUserFriends = async (req, res, next) => {
         //)
 
         const friends = await Promise.all(user.friends.map((id) => {return resolveIdToUsers(id)}))
+        console.log(friends)
         res.send(friends)
 
 
