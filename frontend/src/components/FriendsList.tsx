@@ -74,7 +74,7 @@ export default function FriendsList() {
     }
     return (
         user?.friends.length != 0 && (
-            <main className="border dark:border-gray-600 lg:sticky top-3 bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5 text-black dark:text-slate-200 dark:bg-gray-900" id="friends">
+            <main className="border dark:border-gray-600 bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5 text-black dark:text-slate-200 dark:bg-gray-900" id="friends">
                 <h1 className="text-black dark:text-slate-200 font-semibold text-center">Your friends</h1>
                 <div className="flex flex-col gap-6">
                     {user?.friends.map((friend, index) => (

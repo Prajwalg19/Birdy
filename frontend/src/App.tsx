@@ -7,6 +7,7 @@ import {ReactNode} from "react";
 import Register from "./Pages/Register";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import PrivateRoute from "@/components/PrivateRoute";
+import Footer from "./components/Footer";
 function App(): ReactNode {
 
     return (
@@ -26,6 +27,7 @@ function App(): ReactNode {
                     </Routes>
 
                 </BrowserRouter>
+                <Footer />
             </ThemeSwitcher>
 
         </div>

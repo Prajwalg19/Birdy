@@ -14,7 +14,6 @@ import {BiMessageRounded} from "react-icons/bi"
 import {FaHeart} from "react-icons/fa6"
 import {CiHeart} from "react-icons/ci"
 import Comment from "./CommentModal"
-import Footer from "@/components/Footer";
 import Spinner from "./Spinner"
 
 export default function MainFeed() {
@@ -166,7 +165,6 @@ export default function MainFeed() {
                     ))
                 }
                 {showModal && <Comment changeModalState={setShowModal} modalState={showModal} postInfo={clickedPost} />}
-                <Footer />
             </div>
 
 

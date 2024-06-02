@@ -50,7 +50,8 @@ export async function logIn(req, res, next) {
         if (authorized) {
             const token = jwt.sign({id: query._id}, process.env.JWT_SEC_KEY)
             const {password, ...rest} = query._doc
-            res.status(200).cookie("my_cookie", token, {httpOnly: true, sameSite: 'None', secure: true, partitioned: true}).json({message: "Login successful", user: rest, token})
+            res.status(200).cookie("my_cookie", token, {httpOnly: true, sameSite: 'None', secure: true, partitioned: true}).json({message: "Login successful", user: rest, token}) //
+            // Browsers are becoming stricter with how they handle third-party cookies (cookies set by a domain other than the one currently being visited). The 'Partitioned' attribute is part of the effort to mitigate cross-site tracking. If a cookie is considered third-party and does not have the 'Partitioned' attribute, it might be rejected by the browser
         }
         else {
             next(customError("Wrong password or email", 403))
