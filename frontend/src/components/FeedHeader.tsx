@@ -90,10 +90,10 @@ export default function FeedHeader() {
     return (
         <Formik initialValues={postInitValues} onSubmit={handleSubmit} >
             {({setFieldValue, handleSubmit, handleChange, values, resetForm}) => (
-                <form onSubmit={handleSubmit} className="border bg-white border-black/10 shadow-lg rounded-lg p-6">
+                <form onSubmit={handleSubmit} className="dark:border dark:border-slate-600/80 transition-all border bg-white border-black/10 shadow-lg rounded-lg p-6 dark:bg-gray-900">
                     <section className="flex items-center gap-4 mb-8">
-                        <Link to={`profile/${user.user?._id}`}><img src={`${user.user?.photoPath}`} alt="profile pic" className="w-10 h-10 rounded-full" /> </Link>
-                        <input type="text" name="description" value={values.description} placeholder="What&apos;s happening ?" onChange={handleChange} className="py-4 px-6 border border-black/60 rounded-full w-full" />
+                        <Link to={`profile/${user.user?._id}`}><img src={`${user.user?.photoPath}`} alt="profile pic" className="dark:border-2 dark:border-slate-400  w-10 h-10 rounded-full" /> </Link>
+                        <input type="text" name="description" value={values.description} placeholder="What&apos;s happening ?" onChange={handleChange} className="py-4 px-6 border dark:bg-slate-800 dark:border-slate-600 text-black dark:text-slate-100 border-black/60 rounded-full w-full" />
                     </section>
                     {
                         showSelector && (
@@ -104,7 +104,7 @@ export default function FeedHeader() {
                                 }
                             }>
                                 {({getRootProps, getInputProps}) => (
-                                    <div {...getRootProps()} className={`my-3 flex justify-center items-center hover:bg-slate-100 transition ease-out active:bg-slate-200 cursor-pointer relative w-full h-16 border-2 border-dashed border-black/60 text-xs font-mono ${values.postImage && "border-blue-600"}`}>
+                                    <div {...getRootProps()} className={`my-3 flex justify-center items-center hover:bg-slate-100 transition ease-out active:bg-slate-200 cursor-pointer relative w-full h-16 border-2 dark:border-slate-400 dark:text-white text-black dark:hover:bg-slate-700 dark:bg-slate-800 border-dashed border-black/60 text-xs font-mono ${values.postImage && "border-blue-600"}`}>
                                         <input className="w-full h-10"  {...getInputProps()} />
                                         {!values.postImage ? <p >Select or drop your image here</p> : <div className="flex justify-between w-full items-center px-5"><p>{values.postImage.name}</p><FaPencil /></div>
                                         }
@@ -118,7 +118,7 @@ export default function FeedHeader() {
                         )
                     }
 
-                    <section className="flex items-center justify-around">
+                    <section className="text-black dark:text-slate-300 flex items-center justify-around">
 
                         <span>
                             <FaImage onClick={() => {setShowSelector(!showSelector); setFieldValue("postImage", null)}} className="text-xl cursor-pointer" />

@@ -4,7 +4,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 
 interface initState {
-    theme: "dark" | "light";
+    theme: "dark" | "light" | null;
     token: null | string;
     user: null | userStructure;
     posts: postsStructure[] | null
@@ -13,7 +13,7 @@ interface initState {
 
 }
 const initialState: initState = {
-    theme: "dark",
+    theme: null,
     token: null,
     user: null,
     posts: []

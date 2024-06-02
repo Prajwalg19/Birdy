@@ -5,25 +5,28 @@ import LoginPage from "@/Pages/Login"
 import Header from "./Pages/Header";
 import {ReactNode} from "react";
 import Register from "./Pages/Register";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 import PrivateRoute from "@/components/PrivateRoute";
 function App(): ReactNode {
 
     return (
-        <div >
-            <BrowserRouter>
-                <Header />
-                <Routes>
+        <div  >
+            <ThemeSwitcher >
+                <BrowserRouter>
+                    <Header />
+                    <Routes>
 
-                    <Route path="/" element={<PrivateRoute />}>
-                        <Route element={<HomePage />} path="/" />
-                        <Route element={<Profile />} path="/profile/:userId" />
-                    </Route>
-                    <Route element={<LoginPage />} path="/login" />
-                    <Route element={<Register />} path="/register" />
+                        <Route path="/" element={<PrivateRoute />}>
+                            <Route element={<HomePage />} path="/" />
+                            <Route element={<Profile />} path="/profile/:userId" />
+                        </Route>
+                        <Route element={<LoginPage />} path="/login" />
+                        <Route element={<Register />} path="/register" />
 
-                </Routes>
+                    </Routes>
 
-            </BrowserRouter>
+                </BrowserRouter>
+            </ThemeSwitcher>
 
         </div>
     )

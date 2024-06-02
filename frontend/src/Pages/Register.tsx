@@ -119,23 +119,23 @@ export default function Register() {
 
 
     return (
-        <div className="py-14 md:mt-16 mt-5 px-6 my-2 rounded-2xl  max-w-3xl mx-4 sm:mx-auto justify-center items-center">
+        <div className="dark:text-slate-200 text-black py-14 md:mt-16 mt-5 px-6 my-2 rounded-2xl  max-w-3xl mx-4 sm:mx-auto justify-center items-center">
             <div className="flex flex-col gap-7">
                 <p className="justify-center font-semibold text-2xl flex items-center gap-3"><SiThunderbird /><span>Birdy </span></p>
                 <p className="text-center font-serif italic">Start connecting with people right now with birdy!</p>
                 <Formik className="flex flex-col justify-center" onSubmit={handleSubmit} initialValues={registerInitValues} validationSchema={registerValidation}>
                     {
                         ({values, errors, handleBlur, handleSubmit, handleChange, resetForm, touched, setFieldValue}) => (
-                            <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-5">
-                                <div className="flex sm:flex-nowrap gap-10 flex-wrap items-center w-full">
+                            <form onSubmit={handleSubmit} className="flex flex-col justify-center  sm:gap-5">
+                                <div className="flex sm:flex-nowrap sm:gap-10 flex-wrap items-center w-full">
                                     <InputField props={{handleBlur, handleChange, value: values.firstName, errors: errors.firstName, touched: touched.firstName, placeholder: "First Name", name: "firstName", type: "text"}} />
                                     <InputField props={{handleBlur, handleChange, value: values.lastName, errors: errors.lastName, touched: touched.lastName, placeholder: "Last Name", name: "lastName", type: "text"}} />
                                 </div>
-                                <div className="flex sm:flex-nowrap gap-10 flex-wrap items-center w-full">
+                                <div className="flex sm:flex-nowrap sm:gap-10 flex-wrap items-center w-full">
                                     <InputField props={{handleBlur, handleChange, value: values.email, errors: errors.email, touched: touched.email, placeholder: "Email", name: "email", type: "email"}} />
                                     <InputField props={{handleBlur, handleChange, value: values.password, errors: errors.password, touched: touched.password, placeholder: "Password", name: "password", type: "password"}} />
                                 </div>
-                                <div className="flex sm:flex-nowrap gap-10 flex-wrap items-center w-full">
+                                <div className="flex sm:flex-nowrap sm:gap-10 flex-wrap items-center w-full">
                                     <InputField props={{handleBlur, handleChange, value: values.location, errors: errors.location, touched: touched.location, placeholder: "Location", name: "location", type: "text"}} />
                                     <InputField props={{handleBlur, handleChange, value: values.occupation, errors: errors.occupation, touched: touched.occupation, placeholder: "Occupation", name: "occupation", type: "text"}} />
 
@@ -146,7 +146,7 @@ export default function Register() {
                                     {
                                         ({getRootProps, getInputProps}) => (
 
-                                            <div  {...getRootProps()} className={`flex justify-center items-center hover:bg-slate-100 transition ease-out active:bg-slate-200 cursor-pointer relative w-full h-16 border border-dashed border-black/60 text-xs font-mono ${values.photoPath && "border-blue-600"}`}>
+                                            <div  {...getRootProps()} className={`flex justify-center items-center hover:bg-slate-100 transition ease-out active:bg-slate-200 cursor-pointer relative w-full h-16 border-dashed border-black/60 text-xs font-mono border-2 dark:border-slate-400 dark:text-white text-black dark:hover:bg-slate-700 dark:bg-slate-800 ${values.photoPath && "border-blue-600"}`}>
                                                 <input className="w-full h-10"  {...getInputProps()} />
                                                 {!values.photoPath ? <p >Select or drop your image here</p> : <div className="flex justify-between w-full items-center px-5"><p>{values.photoPath.name}</p><FaPencil /></div>
                                                 }
@@ -155,11 +155,11 @@ export default function Register() {
                                         )
                                     }
                                 </Dropzone>
-                                <div className="h-5">{touched && errors ? (<div className="text-red-500 text-xs">{errors.photoPath}</div>) : null}
+                                <div className="h-5 my-1">{touched && errors ? (<div className="text-red-500 text-xs">{errors.photoPath}</div>) : null}
                                 </div>
 
                                 <button disabled={loading} type="submit" className="justify-center flex items-center disabled:opacity-75 w-full py-1 font-semibold bg-blue-500 text-white rounded-sm">{loading ? <div className="h-5 w-5 animate-spin border-t-2 border-white rounded-full box-border"></div> : "Register"}</button>
-                                <Link className="text-sm font-medium" onClick={() => resetForm()} to={"/login"}>Already have an account? <span className="text-blue-500">Let&apos;s log in then</span></Link>
+                                <Link className="text-sm font-medium mt-2 sm:mt-0" onClick={() => resetForm()} to={"/login"}>Already have an account? <span className="text-blue-500">Let&apos;s log in then</span></Link>
                             </form>
 
                         )

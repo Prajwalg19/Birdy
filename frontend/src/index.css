@@ -5,4 +5,5 @@
 
 body {
     @apply bg-neutral-200;
+    @apply dark:dark:bg-gray-900/90
 }

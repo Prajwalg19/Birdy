@@ -41,12 +41,13 @@ export default function UserCard({userId}: {userId: string | null}) {
 
     return (
         userInfo && (
-            <div className="lg:sticky top-3 flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
+            <div className="dark:border-slate-600 dark:bg-gray-900 dark:text-slate-200 text-black lg:sticky top-3 flex flex-col justify-center w-full bg-white rounded-2xl  border border-black/10 h-[520px] shadow-lg px-10" >
                 <div className="flex justify-between items-center w-full">
                     <section className="flex items-center gap-4">
-                        <Link to={`/profile/${userInfo._id}`}> <img src={`${userInfo?.photoPath}`} className="rounded-full h-10 w-10 bg-purple-600" /> </Link>
+                        <Link to={`/profile/${userInfo._id}`}> <img src={`${userInfo?.photoPath}`} className="dark:border-2 dark:border-slate-400 rounded-full h-10 w-10 bg-purple-600" /> </Link>
                         <span className="flex flex-col justify-center">
                             <span className="text-lg capitalize font-semibold"><Link to={`/profile/${userInfo._id}`}>{userInfo.firstName + " " + userInfo.lastName}</Link></span>
+                            <span className="text-xs text-gray-500 dark:text-gray-300"><a href="#friends"> friends {userInfo.friends.length}</a></span>
                         </span>
 
                     </section>
@@ -55,20 +56,20 @@ export default function UserCard({userId}: {userId: string | null}) {
 
                 <Divider />
 
-                <div className="text-gray-500 flex flex-col gap-3 justify-center ">
+                <div className="text-gray-500  dark:text-gray-300 flex flex-col gap-3 justify-center ">
                     <span className="flex  items-center flex-row gap-6"><ImLocation2 className="text-xl" /><span className="text-sm">{userInfo.location}</span></span>
                     <span className="flex items-center flex-row gap-6"><MdWork className="text-xl" /> <span className="text-sm">{userInfo.occupation}</span></span>
                 </div>
                 <Divider />
 
-                <div className="text-gray-500">
+                <div className="text-gray-500 dark:text-gray-400">
                     <span className="flex text-sm justify-between items-center"><span>Your account is viewed by </span><span>{userInfo.viewedProfile}</span></span>
                     <span className="flex text-sm justify-between items-center"><span>Impressions on your posts  </span><span>{userInfo.impression}</span> </span>
                 </div>
                 <Divider />
 
                 <div className="flex flex-col gap-6">
-                    <span className="text-lg text-center text-gray-700 ">Social Profiles</span>
+                    <span className="text-lg text-center dark:text-gray-300 text-gray-700 ">Social Profiles</span>
                     <div className="flex justify-between items-center">
                         <div className="flex gap-6 items-center">
                             <span><FaXTwitter className="text-xl" /></span>

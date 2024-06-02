@@ -49,20 +49,20 @@ export default function FriendsList() {
     }
     return (
         user?.friends.length != 0 && (
-            <main className=" lg:sticky top-3 bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5" id="friends">
-                <h1 className="font-semibold text-center">Your friends</h1>
+            <main className="border dark:border-gray-600 lg:sticky top-3 bg-white rounded-xl w-full h-auto flex flex-col justify-center gap-6 p-5 text-black dark:text-slate-200 dark:bg-gray-900" id="friends">
+                <h1 className="text-black dark:text-slate-200 font-semibold text-center">Your friends</h1>
                 <div className="flex flex-col gap-6">
                     {user?.friends.map((friend, index) => (
                         <section key={index} className="flex justify-between items-center">
                             <span className="flex flex-row gap-4 items-center">
-                                <img src={`${friend.photoPath}`} alt="user profile pic" className="h-12 w-12 rounded-full" />
+                                <img src={`${friend.photoPath}`} alt="user profile pic" className="h-12 w-12 rounded-full dark:border-2 dark:border-slate-400 " />
                                 <span className="text-sm flex flex-col justify-center ">
                                     <span className="font-semibold">{friend.firstName + " " + friend?.lastName}</span>
-                                    <span className="text-gray-600/80"> {friend?.occupation}</span>
+                                    <span className="dark:text-slate-400 text-gray-600/80"> {friend?.occupation}</span>
                                 </span>
                             </span>
                             <span>
-                                <button onClick={() => handleFriend(friend._id)}> {friendsId.includes(friend._id) ? <IoPersonRemove className="text-xl text-blue-500" /> : <IoMdPersonAdd className="text-xl" />}</button>
+                                <button onClick={() => handleFriend(friend._id)}> {friendsId.includes(friend._id) ? <IoPersonRemove className="text-xl text-blue-500 dark:text-blue-700" /> : <IoMdPersonAdd className="text-xl" />}</button>
 
 
                             </span>

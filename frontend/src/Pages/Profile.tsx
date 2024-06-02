@@ -119,7 +119,7 @@ export default function Profile() {
                         {
 
                             posts.map((post, index) => (
-                                <div key={index} className="bg-white px-7 pt-3 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
+                                <div key={index} className="border dark:border-gray-600 dark:bg-gray-900 dark:text-slate-200 text-black bg-white px-7 pt-3 rounded-xl flex flex-col flex-nowrap justify-center gap-4 shadow-lg">
                                     <section className="flex items-center justify-between">
                                         <span className="flex items-center gap-4">
                                             <span><img src={`${post?.userPic}`} className="w-12 h-12 rounded-full" />
@@ -143,7 +143,7 @@ export default function Profile() {
                                         <div className="cursor-pointer transition ease-in-out flex flex-row gap-2 items-center" onClick={() => handleLike(post._id)}>
                                             {user?._id && post.likes[user._id] ? (< FaHeart className={`transition ease-in-out text-lg fill-pink-500`} />) : <CiHeart className="text-xl " />
                                             }
-                                            <span className="text-sm text-gray-700 ">{Object.keys(post.likes).length}</span>
+                                            <span className="text-sm text-black dark:text-slate-200">{Object.keys(post.likes).length}</span>
 
                                         </div>
                                     </section>
